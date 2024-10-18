@@ -5,12 +5,12 @@ using UnityEngine;
 public class AimMove : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
-    public string targetObjectName = "SightLook"; // ターゲットオブジェクトの名前
-    public string reverseLookObjectName = "ReverseLook"; // 追従するオブジェクトの名前
+    public string targetObjectName = "TPSAimRight"; 
+    public string reverseLookObjectName = "TPSDefault"; 
 
     private GameObject targetObject;
     private GameObject reverseLookObject;
-    private bool isAiming = false; // エイム中かどうかのフラグ
+    private bool isAiming = false; 
     private Vector3 targetPosition;
     private Vector3 reverseLookPosition;
 
@@ -22,12 +22,12 @@ public class AimMove : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1)) // 右クリックが押されたとき
+        if (Input.GetMouseButtonDown(1)) 
         {
             isAiming = true;
         }
 
-        if (Input.GetMouseButtonUp(1)) // 右クリックが離されたとき
+        if (Input.GetMouseButtonUp(1)) 
         {
             isAiming = false;
         }

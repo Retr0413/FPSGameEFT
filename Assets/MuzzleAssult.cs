@@ -12,6 +12,7 @@ public class MuzzleAssult : MonoBehaviour
     [SerializeField] int MagazineSize;
     [SerializeField] int BulletPerTap;
     [SerializeField] bool ButtonHold;
+    [SerializeField] GameObject effect;
 
     [SerializeField] LayerMask ignoreLayer;
 
@@ -79,6 +80,9 @@ public class MuzzleAssult : MonoBehaviour
         Rigidbody bulletRigidbody = newbullet.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(this.cameraTransform.forward * ShootForce * 2);
         Destroy(newbullet, 20f);
+
+        GameObject newEffect = Instantiate(effect, shootPoint.position, Quaternion.identity); 
+        Destroy(newEffect, 0.5f);
 
         bulletsLeft--;
         bulletsShot++;
