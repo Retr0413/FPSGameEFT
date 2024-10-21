@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MuzzleAssult : MonoBehaviour
 {
-     [SerializeField] GameObject bullet;
+    [SerializeField] GameObject bullet;
     [SerializeField] Transform shootPoint;
     [SerializeField] float ShootForce;
     [SerializeField] float ShootingTime;
@@ -12,8 +12,8 @@ public class MuzzleAssult : MonoBehaviour
     [SerializeField] int MagazineSize;
     [SerializeField] int BulletPerTap;
     [SerializeField] bool ButtonHold;
-    [SerializeField] GameObject effect;
 
+    [SerializeField] GameObject effect;  // エフェクト用のGameObject
     [SerializeField] LayerMask ignoreLayer;
 
     GameObject playerCam;
@@ -24,6 +24,7 @@ public class MuzzleAssult : MonoBehaviour
     public bool allowInvoke = true;
     public Transform cameraTransform; // カメラのTransformを設定
     public float rotationSpeed = 5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +60,7 @@ public class MuzzleAssult : MonoBehaviour
             Reload();
         }
     }
+
     private void Shoot()
     {
         readyToShoot = false;
@@ -76,33 +78,38 @@ public class MuzzleAssult : MonoBehaviour
             targetPoint = ray.GetPoint(10);
         }
 
+        // 弾丸を生成して発射
         GameObject newbullet = Instantiate(bullet, this.transform.position, Quaternion.identity);
         Rigidbody bulletRigidbody = newbullet.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(this.cameraTransform.forward * ShootForce * 2);
         Destroy(newbullet, 20f);
 
-        GameObject newEffect = Instantiate(effect, shootPoint.position, Quaternion.identity); 
-        Destroy(newEffect, 0.5f);
+        // エフェクトをMuzzleの位置に生成して1秒後に消去
+        GameObject newEffect = Instantiate(effect, shootPoint.position, shootPoint.rotation, shootPoint);  // Muzzleを親としてエフェクトを生成
+        Destroy(newEffect, 1f);  // 1秒後にエフェクトを削除
 
         bulletsLeft--;
         bulletsShot++;
 
-        if(allowInvoke)
+        if (allowInvoke)
         {
             Invoke("ResetShot", ShootingTime);
             allowInvoke = false;
         }
     }
+
     private void ResetShot()
     {
         readyToShoot = true;
         allowInvoke = true;
     }
+
     private void Reload()
     {
         reloading = true;
         Invoke(nameof(ReloadFinished), 1);
     }
+
     private void ReloadFinished()
     {
         bulletsLeft = MagazineSize;
