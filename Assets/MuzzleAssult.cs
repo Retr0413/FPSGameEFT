@@ -86,7 +86,7 @@ public class MuzzleAssult : MonoBehaviour
 
         // エフェクトをMuzzleの位置に生成して1秒後に消去
         GameObject newEffect = Instantiate(effect, shootPoint.position, shootPoint.rotation, shootPoint);  // Muzzleを親としてエフェクトを生成
-        Destroy(newEffect, 1f);  // 1秒後にエフェクトを削除
+        Destroy(newEffect, 0.5f);  // 1秒後にエフェクトを削除
 
         bulletsLeft--;
         bulletsShot++;
