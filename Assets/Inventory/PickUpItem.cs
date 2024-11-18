@@ -15,6 +15,6 @@ public class PickUpItem : MonoBehaviour
     public void PickUp()
     {
         Inventry.instance.Add(item);
-        Destroy(gameObject);
+        this.gameObject.SetActive(false);
     }
 }

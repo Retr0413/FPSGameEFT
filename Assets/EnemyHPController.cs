@@ -17,7 +17,8 @@ public class EnemyHPController : MonoBehaviour
     private int currentArmor;         // 現在のアーマー
     private float timeSinceLastDamage = 0f; // 最後のダメージからの経過時間
     private bool isRecovering = false;      // 回復状態のチェック
-    private float chargeAmount = 0f;        // 充電の進行度
+    private float chargeAmount = 0f;
+    private float ArmorRepear = 3;        // 充電の進行度
 
     void Start()
     {
@@ -61,7 +62,7 @@ public class EnemyHPController : MonoBehaviour
         }
 
         // Zキーが押され、アーマーが100%未満の時に充電を増加
-        if (Input.GetKey(KeyCode.Z) && currentArmor < 25)
+        if (currentArmor < 10 && ArmorRepear > 0)
         {
             chargeAmount += Time.deltaTime / chargeDuration; // 充電の進行度を設定
             chargeSlider.value = Mathf.Clamp01(chargeAmount); // 0から1までの範囲で制限
@@ -73,6 +74,7 @@ public class EnemyHPController : MonoBehaviour
                 armorSlider.value = currentArmor;
                 chargeAmount = 0f; // 充電をリセット
                 chargeSlider.value = 0f;
+                ArmorRepear -= 1;
             }
         }
         else
