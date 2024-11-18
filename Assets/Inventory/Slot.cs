@@ -1,38 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
     public Image icon;
-    Item item;
     public GameObject removeButton;
-    
-    public void AddItem(Item newItem)
+    Item item;
+    //アイテムを追加する
+    public void AddItem(Item newItem) 
     {
         item = newItem;
         icon.sprite = newItem.icon;
-        icon.enabled = true;
         removeButton.SetActive(true);
     }
-
-    public void ClearSlot()
+    //アイテムを取り除く
+    public void ClearItem()
     {
         item = null;
         icon.sprite = null;
-        icon.enabled = false;
         removeButton.SetActive(false);
     }
-
+    //アイテムの消去ボタン
     public void OnRemoveButton()
     {
         Inventry.instance.Remove(item);
     }
-
-    public void UseItem()
+    //アイテムの使用ボタン
+    public void UseItem() 
     {
-        if (item == null)
+        if(item== null) 
         {
             return;
         }
