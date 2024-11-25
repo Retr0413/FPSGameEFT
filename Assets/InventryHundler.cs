@@ -25,8 +25,7 @@ public class InventoryHandler : MonoBehaviour
                 inventory.SetActive(true);
                 system = true;
 
-                // マウスカーソルを非表示にする
-                Cursor.visible = false;
+                Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Locked;
             }
             else
@@ -34,8 +33,7 @@ public class InventoryHandler : MonoBehaviour
                 inventory.SetActive(false);
                 system = false;
 
-                // マウスカーソルを表示する
-                Cursor.visible = true;
+                Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.None;
             }
         }

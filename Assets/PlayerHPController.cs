@@ -12,6 +12,7 @@ public class PlayerHPController : MonoBehaviour
     public int maxArmor = 100;        // 最大アーマー
     public int recoveryAmount = 5;    // 回復量
     public float chargeDuration = 5f; // 充電が100%になるまでの時間
+    public float healRate = 10f;      // HealDroneによる回復速度（秒あたり）
 
     private int currentHP;            // 現在のHP
     private int currentArmor;         // 現在のアーマー
@@ -19,8 +20,13 @@ public class PlayerHPController : MonoBehaviour
     private bool isRecovering = false;      // 回復状態のチェック
     private float chargeAmount = 0f;        // 充電の進行度
 
+    private GameObject healDrone;     // HealDroneゲームオブジェクト
+
     void Start()
     {
+        // HealDroneをシーンから取得
+        healDrone = GameObject.Find("HealDrone");
+
         // 初期値の設定
         currentHP = maxHP;
         currentArmor = maxArmor;
@@ -58,6 +64,18 @@ public class PlayerHPController : MonoBehaviour
         else
         {
             isRecovering = false; // 回復中でない
+        }
+
+        // HealDroneがアクティブな場合、アーマーとHPを徐々に回復
+        if (healDrone != null)
+        {
+            Debug.Log("HealDroneの状態: " + healDrone.activeInHierarchy);
+        }
+
+        if (healDrone != null && healDrone.activeInHierarchy)
+        {
+            RecoverArmor(Time.deltaTime * healRate); // アーマーの回復
+            RecoverHP((int)(Time.deltaTime * healRate)); // HPの回復
         }
 
         // Zキーが押され、アーマーが100%未満の時に充電を増加
@@ -120,5 +138,16 @@ public class PlayerHPController : MonoBehaviour
             currentHP = maxHP; // HPは最大値を超えない
         }
         hpSlider.value = currentHP;
+    }
+
+    // アーマーを回復する関数
+    private void RecoverArmor(float amount)
+    {
+        currentArmor += (int)amount;
+        if (currentArmor > maxArmor)
+        {
+            currentArmor = maxArmor; // アーマーは最大値を超えない
+        }
+        armorSlider.value = currentArmor;
     }
 }
