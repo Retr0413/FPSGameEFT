@@ -7,8 +7,15 @@ public class Inventry : MonoBehaviour
     private InventryUI inventryUI;
 
     // 特定のアイテムを指定するための変数
-    public string itemToCheck;
-    public GameObject targetGameObject; // アイテムがある場合に有効化するオブジェクト
+    public string itemToCheck1;
+    public string itemToCheck2;
+    public string itemToCheck3;
+    public string itemToCheck4;
+    public GameObject targetGameObject1;
+    public GameObject targetGameObject2;
+    public GameObject targetGameObject3;
+    public GameObject targetGameObject4;
+    
 
     private void Awake()
     {
@@ -55,10 +62,25 @@ public class Inventry : MonoBehaviour
     // 特定のアイテムが存在するか確認し、対象オブジェクトを有効化する
     public void CheckAndActivateItem()
     {
-        if (!string.IsNullOrEmpty(itemToCheck) && targetGameObject != null)
+        if (!string.IsNullOrEmpty(itemToCheck1) && targetGameObject1 != null)
         {
-            bool itemExists = ContainsItem(itemToCheck);
-            targetGameObject.SetActive(itemExists);
+            bool itemExists = ContainsItem(itemToCheck1);
+            targetGameObject1.SetActive(itemExists);
+        }
+        if (!string.IsNullOrEmpty(itemToCheck2) && targetGameObject2 != null)
+        {
+            bool itemExists = ContainsItem(itemToCheck2);
+            targetGameObject2.SetActive(itemExists);
+        }
+        if (!string.IsNullOrEmpty(itemToCheck3) && targetGameObject3 != null)
+        {
+            bool itemExists = ContainsItem(itemToCheck3);
+            targetGameObject3.SetActive(itemExists);
+        }
+        if (!string.IsNullOrEmpty(itemToCheck4) && targetGameObject4 != null)
+        {
+            bool itemExists = ContainsItem(itemToCheck4);
+            targetGameObject4.SetActive(itemExists);
         }
     }
 
