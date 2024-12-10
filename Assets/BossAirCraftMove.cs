@@ -28,6 +28,7 @@ public class BossAirCraftMove : MonoBehaviour
 
     public float heightChangeSpeed = 2f;
     private float targetHeight;
+    private bool isDead = false;
 
     void Start()
     {
@@ -42,6 +43,8 @@ public class BossAirCraftMove : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TakeDamage(250);
@@ -109,6 +112,10 @@ public class BossAirCraftMove : MonoBehaviour
 
         Vector3 movement = walkDirection * speed * Time.deltaTime;
         transform.position += movement;
+
+        float currentHeight = transform.position.y;
+        float newHeight = Mathf.MoveTowards(currentHeight, targetHeight, heightChangeSpeed * Time.deltaTime);
+        transform.position = new Vector3(transform.position.x, newHeight, transform.position.z);
 
         FacePlayer();
     }
@@ -179,7 +186,10 @@ public class BossAirCraftMove : MonoBehaviour
 
     private void Die()
     {
+        isDead = true;
         targetHeight = 0;
+
+        SmoothUpdateHeight();
 
         if (!enemiesSpawned)
         {
