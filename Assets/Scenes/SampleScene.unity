@@ -765,6 +765,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9affc36a7bd664b98147dc337985b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 7299882640743148791, guid: 8777fd90c399aa643bf1b1b3ff7ee226, type: 3}
+  interval: 10
+  battleRange: 1000
 --- !u!1 &298895454
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,9 +1372,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6713873010666850500, guid: 2128b220857b4614a9d8f4c45a370a2a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1673657967}
-    - targetCorrespondingSourceObject: {fileID: 6713873010666850500, guid: 2128b220857b4614a9d8f4c45a370a2a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1673657970}
     - targetCorrespondingSourceObject: {fileID: 6713873010666850500, guid: 2128b220857b4614a9d8f4c45a370a2a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1673657971}
@@ -2570,7 +2570,7 @@ MonoBehaviour:
   firerate: 0.2
   bulletspeed: 200
   spread: 0.4
-  BattleRange: 50
+  BattleRange: 1000
   MagazineSize: 200
   ReloadTime: 10
   magazineLeft: 0
@@ -3701,6 +3701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e39a5bde3e0a9444cad1409dbff7afb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 1673657967}
   player: {fileID: 2087058825}
   interval: 10
   maxMoveDistance: 100
@@ -3717,33 +3718,12 @@ MonoBehaviour:
   enemyPrefab: {fileID: 8005831953111307278, guid: 61217e1fc42f53c4db32470717efc45d, type: 3}
   enemyPrefab1: {fileID: 8536755392001175590, guid: f978a94c4943e894da5655c12932292e, type: 3}
   heightChangeSpeed: 10
+  explosionPrefab: {fileID: 100012, guid: 3364c97de68d3a147af572d1c71c6455, type: 3}
 --- !u!4 &1673657969 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6713873010666850501, guid: 2128b220857b4614a9d8f4c45a370a2a, type: 3}
   m_PrefabInstance: {fileID: 738780183}
   m_PrefabAsset: {fileID: 0}
---- !u!195 &1673657970
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1673657966}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 70
-  m_BaseOffset: 70
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!65 &1673657971
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4205,6 +4185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9affc36a7bd664b98147dc337985b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 7299882640743148791, guid: 8777fd90c399aa643bf1b1b3ff7ee226, type: 3}
+  interval: 10
+  battleRange: 1000
 --- !u!1 &2002328192
 GameObject:
   m_ObjectHideFlags: 0

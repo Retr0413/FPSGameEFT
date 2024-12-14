@@ -13,19 +13,22 @@ public class DroneAI : MonoBehaviour
     public float tgdistance;
     public float playerdistance;
     public GameObject enemy;
+    public GameObject enemy1;
     public GameObject player;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         // ResetWalkParameters();
-        enemy = GameObject.Find("Rougue Variant");
+        enemy = GameObject.Find("Rougue Variant Assult");
+        enemy1 = GameObject.Find("Rougue Variant LMG");
         player = GameObject.Find("PlayerPMC");
     }
 
     void Update()
     {
         tgdistance = Vector3.Distance(transform.position, enemy.transform.position);
+        tgdistance = Vector3.Distance(transform.position, enemy1.transform.position);
         playerdistance = Vector3.Distance(transform.position, player.transform.position);
         // if (tgdistance > 100 || tgdistance < 15)
         // {
@@ -34,6 +37,7 @@ public class DroneAI : MonoBehaviour
         if (tgdistance < 50 && tgdistance > 15)
         {
             agent.destination = enemy.transform.position;
+            agent.destination = enemy1.transform.position;
         }
         else if (tgdistance < 50)
         {
