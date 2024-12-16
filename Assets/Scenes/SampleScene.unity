@@ -745,14 +745,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 289935582}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.1449, y: -0.0122, z: -0.0167}
   m_LocalScale: {x: 0.011764706, y: 0.011764703, z: 0.011764703}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1522206990}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &289935584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -765,9 +765,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9affc36a7bd664b98147dc337985b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missilePrefab: {fileID: 7299882640743148791, guid: 8777fd90c399aa643bf1b1b3ff7ee226, type: 3}
-  interval: 10
-  battleRange: 1000
+  bulletenemy: {fileID: 1183513793222945745, guid: e431475b1d7405e4c8000cfd01ebf147, type: 3}
+  Gun: {fileID: 289935583}
+  firerate: 0.2
+  bulletspeed: 5
+  spread: 0.3
+  BattleRange: 1000
+  MagazineSize: 1
+  ReloadTime: 100
+  magazineLeft: 0
 --- !u!1 &298895454
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,14 +2551,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1141940147}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.1445, y: 0, z: -0.0163}
   m_LocalScale: {x: 0.011764706, y: 0.011764703, z: 0.011764703}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1522206990}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &1141940149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2568,7 +2574,7 @@ MonoBehaviour:
   bulletenemy: {fileID: 5919801030428060746, guid: a12fd4e0b77e89d418350afb81f97d6f, type: 3}
   Gun: {fileID: 1141940148}
   firerate: 0.2
-  bulletspeed: 200
+  bulletspeed: 5
   spread: 0.4
   BattleRange: 1000
   MagazineSize: 200
@@ -4165,14 +4171,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2001420363}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.1449, y: 0.014, z: -0.0167}
   m_LocalScale: {x: 0.011764706, y: 0.011764703, z: 0.011764703}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1522206990}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &2001420365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4185,9 +4191,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9affc36a7bd664b98147dc337985b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missilePrefab: {fileID: 7299882640743148791, guid: 8777fd90c399aa643bf1b1b3ff7ee226, type: 3}
-  interval: 10
-  battleRange: 1000
+  bulletenemy: {fileID: 1183513793222945745, guid: e431475b1d7405e4c8000cfd01ebf147, type: 3}
+  Gun: {fileID: 2001420364}
+  firerate: 0.2
+  bulletspeed: 5
+  spread: 0.3
+  BattleRange: 1000
+  MagazineSize: 1
+  ReloadTime: 100
+  magazineLeft: 0
 --- !u!1 &2002328192
 GameObject:
   m_ObjectHideFlags: 0

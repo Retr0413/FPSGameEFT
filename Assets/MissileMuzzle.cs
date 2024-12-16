@@ -4,58 +4,83 @@ using UnityEngine;
 
 public class MissileMuzzle : MonoBehaviour
 {
-     public GameObject missilePrefab;
-    public float interval = 10f;
-    public float battleRange = 50f;
-    private GameObject player;
-    private float elapsedTime = 0f;
+    public GameObject bulletenemy;
+    public Transform Gun;
+    public float firerate = 0.2f;
+    public float bulletspeed = 200f;
+    public float spread = 0.3f;
+    public float BattleRange = 1000f;
+    public float MagazineSize = 1f;
+    public float ReloadTime = 100f;
 
-    // Start is called before the first frame update
+    private Transform playertransform;
+    private bool ReadyFire = true;
+    private bool allowInvoke = true;
+    private bool Reload;
+
+    public float magazineLeft;
+
     void Start()
     {
-        player = GameObject.Find("PlayerPMC");
+        GameObject player = GameObject.Find("PlayerPMC");
+        playertransform = player.transform;
+        magazineLeft = MagazineSize;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        elapsedTime += Time.deltaTime;
-
-        if (elapsedTime >= interval)
+        if (playertransform == null)
         {
-            FireMissile();
-            elapsedTime = 0f;
+            return;
         }
 
-        CheckPlayerInRangeAndFace();
-    }
-
-    private void FireMissile()
-    {
-        GameObject missile = Instantiate(missilePrefab, transform.position, transform.rotation);
-        Rigidbody rb = missile.GetComponent<Rigidbody>();
-        if (rb != null)
+        float distancePlayer = Vector3.Distance(transform.position, playertransform.position);
+        if (distancePlayer < BattleRange && ReadyFire && !Reload)
         {
-            rb.AddForce(transform.forward * 500f, ForceMode.Impulse);
+            Attack();
         }
     }
-    
 
-    private void CheckPlayerInRangeAndFace()
+    public void Attack()
     {
-        if (player == null) return;
+        ReadyFire = false;
 
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-        if (distance <= battleRange)
+        Vector3 directionToPlayer = (playertransform.position - Gun.position).normalized;
+
+        Gun.rotation = Quaternion.LookRotation(directionToPlayer);
+
+        Instantiate(bulletenemy, Gun.position, Gun.rotation);
+
+        if (allowInvoke)
         {
-            Vector3 directionToPlayer = player.transform.position - transform.position;
-            directionToPlayer.y = 0; 
-
-            if (directionToPlayer != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
-            }
+            Invoke("ResetShot", 1f / firerate);
+            allowInvoke = false;
         }
+
+        if (magazineLeft <= 0)
+        {
+            Reloading();
+            return;
+        }
+
+        magazineLeft--;
+    }
+
+    private void ResetShot()
+    {
+        ReadyFire = true;
+        allowInvoke = true;
+    }
+
+    private void Reloading()
+    {
+        Reload = true;
+        Invoke(nameof(Set), ReloadTime);
+    }
+
+    private void Set()
+    {
+        magazineLeft = MagazineSize;
+        Reload = false;
     }
 }
