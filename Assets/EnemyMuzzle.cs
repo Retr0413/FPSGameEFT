@@ -17,6 +17,7 @@ public class EnemyMuzzle : MonoBehaviour
     private bool ReadyFire = true;
     private bool allowInvoke = true;
     private bool Reload;
+    [SerializeField] GameObject effect;
 
     public float magazineLeft;
 
@@ -51,6 +52,8 @@ public class EnemyMuzzle : MonoBehaviour
         Gun.rotation = Quaternion.LookRotation(directionToPlayer);
 
         GameObject bullet = Instantiate(bulletenemy, Gun.position, Gun.rotation);
+        GameObject newEffect = Instantiate(effect, Gun.position, Gun.rotation, Gun);  // Muzzleを親としてエフェクトを生成
+        Destroy(newEffect, 0.5f);
 
         Vector3 spreadVector = new Vector2(
             Random.Range(-spread, spread),
@@ -82,8 +85,9 @@ public class EnemyMuzzle : MonoBehaviour
         allowInvoke = true;
     }
 
-    private void Reloading()
+    public void Reloading()
     {
+        EnemyMoveAI.instance.TriggerReloadAnimation();
         Reload = true;
         Invoke(nameof(Set), ReloadTime);
     }

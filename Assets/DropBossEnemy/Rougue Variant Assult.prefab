@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78e595d2752f6049b08201d9e2051c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletenemy: {fileID: 5919801030428060746, guid: a12fd4e0b77e89d418350afb81f97d6f, type: 3}
+  bulletenemy: {fileID: 8978690136975311388, guid: 869de0bd6a080164391329eaa80422bd, type: 3}
   Gun: {fileID: 698608435116798603}
   firerate: 0.2
   bulletspeed: 200
@@ -52,6 +52,7 @@ MonoBehaviour:
   BattleRange: 50
   MagazineSize: 30
   ReloadTime: 10
+  effect: {fileID: 8174777166450888692, guid: ecea615ef12241c46b756eda355ffae4, type: 3}
   magazineLeft: 0
 --- !u!1 &1812166164564408380
 GameObject:
@@ -1486,8 +1487,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   detectRange: 10
-  itemPrefab: {fileID: 0}
-  itemPrefab1: {fileID: 0}
+  itemPrefab: {fileID: 6195331076136527857, guid: 785c945e548958a40abae6d0b35f6a8c, type: 3}
+  itemPrefab1: {fileID: 1671887667846561153, guid: 81e5c5b7691072b4d83814c3a6126f11, type: 3}
   minWaitTime: 2
   maxWaitTime: 5
 --- !u!4 &8822174146919995031 stripped

@@ -5,11 +5,11 @@ using UnityEngine;
 public class EnemyItemController : MonoBehaviour
 {
     public GameObject player; 
-    public float detectRange = 10f; 
+    public float detectRange = 50f; 
     public GameObject itemPrefab; 
     public GameObject itemPrefab1;
-    public float minWaitTime = 2f; 
-    public float maxWaitTime = 5f; 
+    public float minWaitTime = 10f; 
+    public float maxWaitTime = 30f; 
     private bool isEngagedInCombat = false; 
 
     void Start()

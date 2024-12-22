@@ -5,122 +5,134 @@ using UnityEngine.UI;
 
 public class EnemyHPController : MonoBehaviour
 {
-    public Slider hpSlider;           // HPゲージ用のスライダー
-    public Slider armorSlider;        // アーマーゲージ用のスライダー
-    public Slider chargeSlider;       // アーマー充電用のスライダー
-    public int maxHP = 100;           // 最大HP
-    public int maxArmor = 100;        // 最大アーマー
-    public int recoveryAmount = 5;    // 回復量
-    public float chargeDuration = 5f; // 充電が100%になるまでの時間
+    public Slider hpSlider;
+    public Slider armorSlider;
+    public Slider chargeSlider;
+    public int maxHP = 100;
+    public int maxArmor = 100;
+    public int recoveryAmount = 5;
+    public float chargeDuration = 5f;
 
-    private int currentHP;            // 現在のHP
-    private int currentArmor;         // 現在のアーマー
-    private float timeSinceLastDamage = 0f; // 最後のダメージからの経過時間
-    private bool isRecovering = false;      // 回復状態のチェック
+    private int currentHP;
+    private int currentArmor;
+    private float timeSinceLastDamage = 0f;
+    private bool isRecovering = false;
     private float chargeAmount = 0f;
-    private float ArmorRepear = 3;        // 充電の進行度
+    private float ArmorRepear = 3;
+
+    private Animator animator;
 
     void Start()
     {
-        // 初期値の設定
         currentHP = maxHP;
         currentArmor = maxArmor;
-
-        // スライダーの初期値を設定
         hpSlider.maxValue = maxHP;
         hpSlider.value = currentHP;
-
         armorSlider.maxValue = maxArmor;
         armorSlider.value = currentArmor;
-
-        // 充電スライダーの初期値を設定
-        chargeSlider.maxValue = 1f;  // 0から1の範囲で管理
+        chargeSlider.maxValue = 1f;
         chargeSlider.value = 0f;
+
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // デバッグ用：スペースキーでダメージを受ける
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            TakeDamage(10); // 10ダメージ
-            timeSinceLastDamage = 0f; // ダメージを受けたのでタイマーをリセット
+            TakeDamage(10);
+            timeSinceLastDamage = 0f;
         }
 
-        // ダメージを受けていない時間を計測
         timeSinceLastDamage += Time.deltaTime;
 
-        // 条件：アーマーがゼロかつ、5秒以上ダメージを受けていない場合にHPを回復
         if (armorSlider.value == 0 && timeSinceLastDamage >= 5f && currentHP < maxHP)
         {
             RecoverHP(recoveryAmount);
-            isRecovering = true; // 回復中とする
+            isRecovering = true;
         }
         else
         {
-            isRecovering = false; // 回復中でない
+            isRecovering = false;
         }
 
-        // Zキーが押され、アーマーが100%未満の時に充電を増加
         if (currentArmor < 10 && ArmorRepear > 0)
         {
-            chargeAmount += Time.deltaTime / chargeDuration; // 充電の進行度を設定
-            chargeSlider.value = Mathf.Clamp01(chargeAmount); // 0から1までの範囲で制限
+            chargeAmount += Time.deltaTime / chargeDuration;
+            chargeSlider.value = Mathf.Clamp01(chargeAmount);
 
-            // 充電スライダーが100%に達した場合、アーマーを100%に
             if (chargeSlider.value >= 1f)
             {
                 currentArmor = maxArmor;
                 armorSlider.value = currentArmor;
-                chargeAmount = 0f; // 充電をリセット
+                chargeAmount = 0f;
                 chargeSlider.value = 0f;
                 ArmorRepear -= 1;
             }
         }
         else
         {
-            // Zキーが離されたら充電をリセット
             chargeAmount = 0f;
             chargeSlider.value = 0f;
         }
     }
 
-    // ダメージを受ける関数
     public void TakeDamage(int damage)
     {
         if (currentArmor > 0)
         {
-            // アーマーがある場合はアーマーを減らす
             currentArmor -= damage;
             if (currentArmor < 0)
             {
-                currentArmor = 0; // アーマーは0以下にならない
+                currentArmor = 0;
             }
             armorSlider.value = currentArmor;
         }
         else
         {
-            // アーマーがない場合はHPを減らす
             currentHP -= damage;
-            if (currentHP < 0)
+            if (currentHP <= 0)
             {
-                currentHP = 0; // HPも0以下にならない
-                // HPが0になった際の処理（ゲームオーバーなど）
-                Debug.Log("Player is dead!");
+                currentHP = 0;
+                Die();
             }
             hpSlider.value = currentHP;
         }
-        timeSinceLastDamage = 0f; // ダメージを受けたのでタイマーをリセット
+        timeSinceLastDamage = 0f;
     }
 
-    // HPを回復する関数
     private void RecoverHP(int amount)
     {
         currentHP += amount;
         if (currentHP > maxHP)
         {
-            currentHP = maxHP; // HPは最大値を超えない
+            currentHP = maxHP;
         }
         hpSlider.value = currentHP;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Bullet")
+        {
+            TakeDamage(10);
+        }
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        if (other.gameObject.tag == "Explosion")
+        {
+            TakeDamage(20);
+        }
+    }
+
+    private void Die()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("Die", true);
+        }
+        Destroy(gameObject, 3f);
     }
 }

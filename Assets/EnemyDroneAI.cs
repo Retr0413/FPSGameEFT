@@ -3,51 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyMoveAI : MonoBehaviour
+public class EnemyDroneAI : MonoBehaviour
 {
     [SerializeField] float interval;
     [SerializeField] float maxMoveDistance;
-    [SerializeField] float animationspeed = 0.1f;
     float elapsedTime;
     Vector3 walkDirection;
     NavMeshAgent agent;
     public float tgdistance;
+    public float playerdistance;
+    public GameObject enemy;
     public GameObject player;
-    private Animator EnemyMove;
-    public static EnemyMoveAI instance;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         ResetWalkParameters();
-        player = GameObject.Find("PlayerPMC");
-        EnemyMove = gameObject.GetComponent<Animator>();
+        enemy = GameObject.Find("PlayerPMC");
+        player = GameObject.Find("Rougue Variant Assult");
     }
 
     void Update()
     {
-        tgdistance = Vector3.Distance(transform.position, player.transform.position);
-        
-        if (tgdistance > 100 || tgdistance < 30)
+        tgdistance = Vector3.Distance(transform.position, enemy.transform.position);
+        playerdistance = Vector3.Distance(transform.position, player.transform.position);
+        if (tgdistance > 100 || tgdistance < 15)
         {
             UpdateAgentMovement();
-            LookPlayer();
-            UpdateAnimation();
         }
-        else if (tgdistance < 100 || tgdistance > 30)
+        if (tgdistance < 50 && tgdistance > 5)
         {
-            agent.destination = player.transform.position;
-            EnemyMove.SetBool("Walk", true);
+            agent.destination = enemy.transform.position;
         }
         else if (tgdistance < 50)
         {
-            LookPlayer();
+            Lookenemy();
+        }
+        else if (playerdistance < 30 && playerdistance > 5 && tgdistance > 50)
+        {
+            agent.destination = player.transform.position;
         }
     }
 
-    void LookPlayer()
+    void Lookenemy()
     {
-        Vector3 direction = player.transform.position - transform.position;
+        Vector3 direction = enemy.transform.position - transform.position;
         direction.y = 0;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
@@ -56,14 +56,18 @@ public class EnemyMoveAI : MonoBehaviour
     void ResetWalkParameters()
     {
         elapsedTime = 0f;
+
         var x = (Random.value * 2f) - 1f;
         var z = (Random.value * 2f) - 1f;
+
         walkDirection = new Vector3(x, 0f, z).normalized;
     }
+
 
     void UpdateAgentMovement()
     {
         elapsedTime += Time.deltaTime;
+
         if (elapsedTime >= interval)
         {
             MoveTowardsTarget();
@@ -71,9 +75,11 @@ public class EnemyMoveAI : MonoBehaviour
         }
     }
 
+
     void MoveTowardsTarget()
     {
         var sourcePos = transform.position;
+        //sourcePos.y -= 1f;
         var targetPos = sourcePos + walkDirection * maxMoveDistance;
         var blocked = NavMesh.Raycast(sourcePos, targetPos, out NavMeshHit hitInfo, NavMesh.AllAreas);
 
@@ -85,31 +91,6 @@ public class EnemyMoveAI : MonoBehaviour
         {
             agent.SetDestination(targetPos);
         }
-
         Debug.DrawLine(sourcePos, targetPos, blocked ? Color.red : Color.green, interval);
-    }
-
-    void UpdateAnimation()
-    {
-        if (agent.velocity.magnitude > animationspeed)
-        {
-            EnemyMove.SetBool("Walk", true);
-        }
-        else
-        {
-            EnemyMove.SetBool("Walk", false);
-        }
-    }
-
-    public void TriggerReloadAnimation()
-    {
-        if (EnemyMove != null)
-        {
-            EnemyMove.SetBool("Reload", true);
-        }
-        else
-        {
-            EnemyMove.SetBool("Reload", false);
-        }
     }
 }
