@@ -5,14 +5,10 @@ using UnityEngine.AI;
 
 public class EnemyMoveAI : MonoBehaviour
 {
-    // �ړI�n��ݒ肷��Ԋu
     [SerializeField] float interval;
-    // ���C�̒���
     [SerializeField] float maxMoveDistance;
     [SerializeField] float animationspeed = 0.1f;
-    // �o�ߎ���
     float elapsedTime;
-    // ��������
     Vector3 walkDirection;
     NavMeshAgent agent;
     public float tgdistance;
