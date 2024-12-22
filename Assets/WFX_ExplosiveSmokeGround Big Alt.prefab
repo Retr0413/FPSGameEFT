@@ -28821,7 +28821,7 @@ GameObject:
   - component: {fileID: -1453528184083280054}
   m_Layer: 0
   m_Name: WFX_ExplosiveSmokeGround Big Alt
-  m_TagString: Untagged
+  m_TagString: Explosion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33678,3 +33678,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc1d0c6dbbaa98c44b6648c0ec4b96bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10

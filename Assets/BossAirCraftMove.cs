@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BossAirCraftMove : MonoBehaviour
 {
+    public Rigidbody rb;
     public GameObject player;
     public float interval = 2f;
     public float maxMoveDistance = 20f;
@@ -29,6 +30,7 @@ public class BossAirCraftMove : MonoBehaviour
     public float heightChangeSpeed = 2f;
     private float targetHeight;
     private bool isDead = false;
+    public GameObject explosionPrefab;
 
     void Start()
     {
@@ -39,6 +41,8 @@ public class BossAirCraftMove : MonoBehaviour
         circlingCenter = transform.position;
         initialYPosition = transform.position.y;
         targetHeight = initialYPosition;
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
     }
 
     void Update()
@@ -60,11 +64,11 @@ public class BossAirCraftMove : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, player.transform.position);
 
-        if (distance < 1f)
+        if (distance > 100f)
         {
             PerformCircling();
         }
-        else if (distance > 1f)
+        else if (distance < 100f)
         {
             MoveRandomly();
         }
@@ -156,23 +160,32 @@ public class BossAirCraftMove : MonoBehaviour
         if (percentage <= 0.75f)
         {
             SetWingActive(0, false);
+            GameObject explosion = Instantiate(explosionPrefab, wings[0].transform.position, Quaternion.identity);
+            Destroy(explosion.gameObject, 2f);
         }
         if (percentage <= 0.5f)
         {
             SetWingActive(1, false);
+            GameObject explosion = Instantiate(explosionPrefab, wings[1].transform.position, Quaternion.identity);
+            Destroy(explosion.gameObject, 2f);
         }
         if (percentage <= 0.25f)
         {
             SetWingActive(2, false);
+            GameObject explosion = Instantiate(explosionPrefab, wings[2].transform.position, Quaternion.identity);
+            Destroy(explosion.gameObject, 2f);
         }
         if (percentage <= 0f)
         {
             SetWingActive(3, false);
+            GameObject explosion = Instantiate(explosionPrefab, wings[3].transform.position, Quaternion.identity);
+            Destroy(explosion.gameObject, 2f);
         }
 
         if (currentHP <= 0)
         {
             Die();
+            rb.useGravity = true;
         }
     }
 
@@ -189,17 +202,24 @@ public class BossAirCraftMove : MonoBehaviour
         isDead = true;
         targetHeight = 0;
 
-        SmoothUpdateHeight();
+        StartCoroutine(WaitAndSpawnEnemies(5f));
 
-        if (!enemiesSpawned)
-        {
-            SpawnEnemies();
-            enemiesSpawned = true;
-        }
+        SmoothUpdateHeight();
+        isDead = true;
+        targetHeight = 0;
     }
 
-    private void SpawnEnemies()
+    private IEnumerator WaitAndSpawnEnemies(float waitTime)
     {
+        yield return new WaitForSeconds(waitTime);
+        SpawnEnemies();
+    }
+
+    private int spawnCount = 0;
+
+    private void SpawnEnemies() {
+        if (spawnCount >= 2) return;
+        spawnCount++;
         Vector3 spawnPosition1 = transform.position + new Vector3(3f, 0f, 0f);
         Vector3 spawnPosition2 = transform.position + new Vector3(-3f, 0f, 0f);
 

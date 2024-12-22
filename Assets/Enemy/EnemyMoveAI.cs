@@ -14,6 +14,7 @@ public class EnemyMoveAI : MonoBehaviour
     public float tgdistance;
     public GameObject player;
     private Animator EnemyMove;
+    public static EnemyMoveAI instance;
 
     void Start()
     {
@@ -26,12 +27,14 @@ public class EnemyMoveAI : MonoBehaviour
     void Update()
     {
         tgdistance = Vector3.Distance(transform.position, player.transform.position);
-        if (tgdistance > 100 || tgdistance < 15)
+        
+        if (tgdistance > 100 || tgdistance < 30)
         {
             UpdateAgentMovement();
+            LookPlayer();
             UpdateAnimation();
         }
-        else if (tgdistance < 100 || tgdistance > 15)
+        else if (tgdistance < 100 || tgdistance > 30)
         {
             agent.destination = player.transform.position;
             EnemyMove.SetBool("Walk", true);
@@ -52,22 +55,15 @@ public class EnemyMoveAI : MonoBehaviour
 
     void ResetWalkParameters()
     {
-        // �p�����[�^��������
         elapsedTime = 0f;
-
-        // �����_���̕������쐬
         var x = (Random.value * 2f) - 1f;
         var z = (Random.value * 2f) - 1f;
-
         walkDirection = new Vector3(x, 0f, z).normalized;
     }
-
 
     void UpdateAgentMovement()
     {
         elapsedTime += Time.deltaTime;
-
-        // �����Ԃ��ƂɖړI�n��ݒ肵�Ēl��������
         if (elapsedTime >= interval)
         {
             MoveTowardsTarget();
@@ -75,28 +71,21 @@ public class EnemyMoveAI : MonoBehaviour
         }
     }
 
-
     void MoveTowardsTarget()
     {
-        // ���C�̎n�_
         var sourcePos = transform.position;
-        //sourcePos.y -= 1f;
-        // ���C�̏I�_
         var targetPos = sourcePos + walkDirection * maxMoveDistance;
-        // ���C�𓊂���
         var blocked = NavMesh.Raycast(sourcePos, targetPos, out NavMeshHit hitInfo, NavMesh.AllAreas);
 
         if (blocked)
         {
-            // �q�b�g�n�_��ړI�n�ɂ���
             agent.SetDestination(hitInfo.position);
         }
         else
         {
-            // �^�[�Q�b�g�ʒu��ړI�n�ɂ���B
             agent.SetDestination(targetPos);
         }
-        // ���C����`��
+
         Debug.DrawLine(sourcePos, targetPos, blocked ? Color.red : Color.green, interval);
     }
 
@@ -109,6 +98,18 @@ public class EnemyMoveAI : MonoBehaviour
         else
         {
             EnemyMove.SetBool("Walk", false);
+        }
+    }
+
+    public void TriggerReloadAnimation()
+    {
+        if (EnemyMove != null)
+        {
+            EnemyMove.SetBool("Reload", true);
+        }
+        else
+        {
+            EnemyMove.SetBool("Reload", false);
         }
     }
 }

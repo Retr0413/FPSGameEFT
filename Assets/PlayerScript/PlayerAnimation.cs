@@ -43,5 +43,14 @@ public class PlayerAnimation : MonoBehaviour
         {
             anim.SetBool("Reload", false);
         }
+
+        // if (Input.GetKey(KeyCode.C))
+        // {
+        //     anim.SetBool("Strafing", true);
+        // }
+        // else
+        // {
+        //     anim.SetBool("Strafing", false);
+        // }
     }
 }
