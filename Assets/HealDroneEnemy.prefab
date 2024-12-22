@@ -215,6 +215,8 @@ GameObject:
   - component: {fileID: 5695608376521814714}
   - component: {fileID: 1344536956068598132}
   - component: {fileID: 695508925363799449}
+  - component: {fileID: 3567168137531458492}
+  - component: {fileID: -595004034472136935}
   m_Layer: 0
   m_Name: HealDroneEnemy
   m_TagString: Player
@@ -458,6 +460,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerdistance: 0
   player: {fileID: 0}
+--- !u!114 &3567168137531458492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547535305580297280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0195367d32df94640bbea836d88af6ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 10
+--- !u!114 &-595004034472136935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547535305580297280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2918ff45367044740ab8da556ebd5af7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyTime: 20
 --- !u!1 &678615062531944799
 GameObject:
   m_ObjectHideFlags: 0

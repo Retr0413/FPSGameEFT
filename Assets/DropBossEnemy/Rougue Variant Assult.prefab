@@ -1488,7 +1488,7 @@ MonoBehaviour:
   player: {fileID: 0}
   detectRange: 10
   itemPrefab: {fileID: 6195331076136527857, guid: 785c945e548958a40abae6d0b35f6a8c, type: 3}
-  itemPrefab1: {fileID: 1671887667846561153, guid: 81e5c5b7691072b4d83814c3a6126f11, type: 3}
+  itemPrefab1: {fileID: 2308532416534485655, guid: 81e5c5b7691072b4d83814c3a6126f11, type: 3}
   minWaitTime: 2
   maxWaitTime: 5
 --- !u!4 &8822174146919995031 stripped
