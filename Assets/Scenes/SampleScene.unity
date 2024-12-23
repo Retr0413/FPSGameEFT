@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.4465788, g: 0.49641287, b: 0.5748173, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -500,6 +500,10 @@ MonoBehaviour:
   itemToCheck2: HealDrone
   itemToCheck3: BombMine
   itemToCheck4: Mortar
+  prefab1: {fileID: 458040546914585115, guid: c4c914e815961d94c88d433d6dd25b1a, type: 3}
+  prefab2: {fileID: 3313525050171334850, guid: d538107532022d44f8580149e3ab3697, type: 3}
+  prefab3: {fileID: 878994181284373065, guid: e0b7074a33a12ba4c83c5cb87d14873d, type: 3}
+  prefab4: {fileID: 6651658063599242420, guid: 60182a209f69150409bdbe5421ada7bb, type: 3}
   targetGameObject1: {fileID: 851194636}
   targetGameObject2: {fileID: 1235770390}
   targetGameObject3: {fileID: 1437477748}

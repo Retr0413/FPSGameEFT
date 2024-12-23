@@ -10,15 +10,23 @@ public class Inventry : MonoBehaviour
     public string itemToCheck2;
     public string itemToCheck3;
     public string itemToCheck4;
+
+    public GameObject prefab1;
+    public GameObject prefab2;
+    public GameObject prefab3;
+    public GameObject prefab4;
+
     public GameObject targetGameObject1;
     public GameObject targetGameObject2;
     public GameObject targetGameObject3;
     public GameObject targetGameObject4;
 
-    private bool isActivated1 = false;
-    private bool isActivated2 = false;
-    private bool isActivated3 = false;
-    private bool isActivated4 = false;
+    private bool isSpawned1 = false;
+    private bool isSpawned2 = false;
+    private bool isSpawned3 = false;
+    private bool isSpawned4 = false;
+
+    private Transform playerTransform;
 
     private void Awake()
     {
@@ -32,6 +40,16 @@ public class Inventry : MonoBehaviour
     {
         inventryUI = GetComponent<InventryUI>();
         inventryUI.UpdateUI();
+
+        GameObject player = GameObject.Find("PlayerPMC");
+        if (player != null)
+        {
+            playerTransform = player.transform;
+        }
+        else
+        {
+            Debug.LogError("Player GameObject not found. Make sure the Player object is correctly named.");
+        }
     }
 
     public List<Item> items = new List<Item>();
@@ -57,31 +75,37 @@ public class Inventry : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            ActivateTargetObjects();
+            ActivateOrSpawnTargetObjects();
         }
     }
 
-    public void ActivateTargetObjects()
+    public void ActivateOrSpawnTargetObjects()
     {
-        if (!string.IsNullOrEmpty(itemToCheck1) && targetGameObject1 != null && ContainsItem(itemToCheck1) && !isActivated1)
+        if (playerTransform == null)
         {
-            targetGameObject1.SetActive(true);
-            isActivated1 = true;
+            Debug.LogWarning("PlayerTransform is null. Cannot spawn prefabs.");
+            return;
         }
-        if (!string.IsNullOrEmpty(itemToCheck2) && targetGameObject2 != null && ContainsItem(itemToCheck2) && !isActivated2)
+
+        if (!string.IsNullOrEmpty(itemToCheck1) && prefab1 != null && ContainsItem(itemToCheck1) && !isSpawned1)
         {
-            targetGameObject2.SetActive(true);
-            isActivated2 = true;
+            targetGameObject1 = Instantiate(prefab1, playerTransform.position + Vector3.forward * 2, Quaternion.identity);
+            isSpawned1 = true;
         }
-        if (!string.IsNullOrEmpty(itemToCheck3) && targetGameObject3 != null && ContainsItem(itemToCheck3) && !isActivated3)
+        if (!string.IsNullOrEmpty(itemToCheck2) && prefab2 != null && ContainsItem(itemToCheck2) && !isSpawned2)
         {
-            targetGameObject3.SetActive(true);
-            isActivated3 = true;
+            targetGameObject2 = Instantiate(prefab2, playerTransform.position + Vector3.right * 2, Quaternion.identity);
+            isSpawned2 = true;
         }
-        if (!string.IsNullOrEmpty(itemToCheck4) && targetGameObject4 != null && ContainsItem(itemToCheck4) && !isActivated4)
+        if (!string.IsNullOrEmpty(itemToCheck3) && prefab3 != null && ContainsItem(itemToCheck3) && !isSpawned3)
         {
-            targetGameObject4.SetActive(true);
-            isActivated4 = true;
+            targetGameObject3 = Instantiate(prefab3, playerTransform.position + Vector3.left * 2, Quaternion.identity);
+            isSpawned3 = true;
+        }
+        if (!string.IsNullOrEmpty(itemToCheck4) && prefab4 != null && ContainsItem(itemToCheck4) && !isSpawned4)
+        {
+            targetGameObject4 = Instantiate(prefab4, playerTransform.position + Vector3.back * 2, Quaternion.identity);
+            isSpawned4 = true;
         }
     }
 

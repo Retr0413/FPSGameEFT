@@ -64,11 +64,11 @@ public class BossAirCraftMove : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, player.transform.position);
 
-        if (distance > 100f)
+        if (distance > 200f)
         {
             PerformCircling();
         }
-        else if (distance < 100f)
+        else if (distance < 200f)
         {
             MoveRandomly();
         }
