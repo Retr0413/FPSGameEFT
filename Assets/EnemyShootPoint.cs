@@ -10,6 +10,10 @@ public class EnemyShootPoint : MonoBehaviour
 
     public float shootForce = 10f; // デフォルトの射出力
     public float launchSpeed = 20f; // 発射速度
+    public float shootingDistance = 300f; // 発射開始距離
+    public float shootingInterval = 10f;  // 発射間隔
+
+    private float shootTimer = 0f;  // 発射タイマー
 
     void Start()
     {
@@ -21,16 +25,29 @@ public class EnemyShootPoint : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Target object 'Rougue Variant' not found in the scene.");
+            Debug.LogError("Target object 'PlayerPMC' not found in the scene.");
         }
     }
 
     void Update()
     {
-        // スペースキーで発射
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (target != null)
         {
-            Shoot();
+            // ターゲットとの距離を計算
+            float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+            // 距離が100を切った場合
+            if (distanceToTarget <= shootingDistance)
+            {
+                shootTimer += Time.deltaTime;
+
+                // 一定時間ごとに発射
+                if (shootTimer >= shootingInterval)
+                {
+                    Shoot();
+                    shootTimer = 0f;
+                }
+            }
         }
     }
 

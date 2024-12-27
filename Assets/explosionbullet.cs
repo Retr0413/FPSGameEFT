@@ -5,7 +5,7 @@ using UnityEngine;
 public class explosionbullet : MonoBehaviour
 {
     public GameObject explosionEffect; 
-    public float lifeTime = 10f;     
+    public float lifeTime = 30f;     
 
     void Start()
     {
