@@ -57,7 +57,7 @@ public class PlayerHPController : MonoBehaviour
 
         if (healDrone != null)
         {
-            Debug.Log("HealDroneの状態: " + healDrone.activeInHierarchy);
+            // Debug.Log("HealDroneの状態: " + healDrone.activeInHierarchy);
         }
 
         if (healDrone != null && healDrone.activeInHierarchy)
@@ -132,7 +132,7 @@ public class PlayerHPController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EnemyBullet"))
+        if (other.CompareTag("EnemyBullet") || other.CompareTag("EnemyShotgunBullet"))
         {
             TakeDamage(5);
             Debug.Log("EnemyBulletに衝突しました！5ダメージを受けました。");
