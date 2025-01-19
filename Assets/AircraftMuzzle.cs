@@ -17,9 +17,9 @@ public class AircraftMuzzle : MonoBehaviour
     private bool ReadyFire = true;
     private bool allowInvoke = true;
     private bool Reload;
+    [SerializeField] GameObject effect;
 
     public float magazineLeft;
-
 
     // Start is called before the first frame update
     void Start()
@@ -38,11 +38,34 @@ public class AircraftMuzzle : MonoBehaviour
         }
 
         float distancePlayer = Vector3.Distance(transform.position, playertransform.position);
-        if (distancePlayer < BattleRange && ReadyFire && !Reload)
+
+        // プレイヤーが攻撃範囲内で、視界に入っている場合のみ攻撃する
+        if (distancePlayer < BattleRange && ReadyFire && !Reload && IsPlayerVisible())
         {
             Attack();
         }
     }
+
+    // プレイヤーが視界に入っているかチェックするメソッド
+    private bool IsPlayerVisible()
+    {
+        // プレイヤーへの方向を計算
+        Vector3 directionToPlayer = (playertransform.position - transform.position).normalized;
+
+        // Raycastを飛ばして、間に障害物があるか確認
+        if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, BattleRange))
+        {
+            // Raycastがプレイヤーにヒットした場合、視界に入っている
+            if (hit.transform == playertransform)
+            {
+                return true;
+            }
+        }
+
+        // 障害物があれば視界に入っていない
+        return false;
+    }
+
     public void Attack()
     {
         ReadyFire = false;
@@ -50,7 +73,9 @@ public class AircraftMuzzle : MonoBehaviour
         Vector3 directionToPlayer = (playertransform.position - Gun.position).normalized;
         Gun.rotation = Quaternion.LookRotation(directionToPlayer);
 
-        GameObject bullet = Instantiate(bulletenemy, Gun.position, Gun.rotation);
+        GameObject bullet = Instantiate(bulletenemy, Gun.position, Gun.rotation, Gun);
+        GameObject newEffect = Instantiate(effect, Gun.position, Gun.rotation, Gun);  // Muzzleを親としてエフェクトを生成
+        Destroy(newEffect, 0.5f);
 
         Vector3 spreadVector = new Vector2(
             Random.Range(-spread, spread),
@@ -82,8 +107,9 @@ public class AircraftMuzzle : MonoBehaviour
         allowInvoke = true;
     }
 
-    private void Reloading()
+    public void Reloading()
     {
+        EnemyMoveAI.instance.TriggerReloadAnimation();
         Reload = true;
         Invoke(nameof(Set), ReloadTime);
     }
