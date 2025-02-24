@@ -22,15 +22,16 @@
 - **Text機能** を使用して、以下のUIを実装。
   - 残弾数の表示
   - プレイヤーのHPの表示
+  - 敵のHPの表示
 
 ## インストール方法
 1. Unity（バージョン 2021.3 以上推奨）をインストール。
 2. 本リポジトリをクローンまたはダウンロード。
    ```sh
-   git clone https://github.com/Retr0413/FPSGameEFT
+   git clone https://github.com/Retr0413/FPSGameEFT.git
    ```
 3. Unityでプロジェクトを開く。
-4. `Assets/Scenes` フォルダ内のメインシーンを開き、プレイを開始。
+4. `Assets/Scenes/StartScene.unity` フォルダ内のメインシーンを開き、プレイを開始。
 
 ## 操作方法
 | 操作 | 説明 |
@@ -41,3 +42,4 @@
 | `右クリック` | エイム |
 | `R` | リロード |
 | `I` | インベントリを開く |
+| `U` | アイテムを使用する |
