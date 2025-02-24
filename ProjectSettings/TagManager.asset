@@ -8,6 +8,11 @@ TagManager:
   - Explosion
   - EnemyBullet
   - Fire
+  - EnemyShotgunBullet
+  - EnemyMob
+  - EnemyBoss
+  - HealDrone
+  - HealDroneEnemy
   layers:
   - Default
   - TransparentFX
