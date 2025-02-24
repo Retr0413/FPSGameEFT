@@ -27,7 +27,7 @@
 1. Unity（バージョン 2021.3 以上推奨）をインストール。
 2. 本リポジトリをクローンまたはダウンロード。
    ```sh
-   git clone https://github.com/your-repo/fps-game.git
+   git clone https://github.com/Retr0413/FPSGameEFT
    ```
 3. Unityでプロジェクトを開く。
 4. `Assets/Scenes` フォルダ内のメインシーンを開き、プレイを開始。
