@@ -44,16 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607a524b5306c5141929ef7f9baa5164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletdrone: {fileID: 5919801030428060746, guid: a12fd4e0b77e89d418350afb81f97d6f, type: 3}
-  Gun: {fileID: 5310346799971031690}
-  firerate: 0.2
-  bulletspeed: 200
-  spread: 0.1
-  BattleRange: 20
-  MagazineSize: 50
-  ReloadTime: 5
+  bulletPrefab: {fileID: 8107258894925456489, guid: dcf2e2a85885e4492a9e528e9e29d85a, type: 3}
+  gunPoint: {fileID: 5310346799971031690}
+  fireRate: 0.2
+  bulletSpeed: 200
+  battleRange: 50
   effect: {fileID: 8174777166450888692, guid: ecea615ef12241c46b756eda355ffae4, type: 3}
-  magazineLeft: 0
 --- !u!1001 &1112290995649665874
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,6 +141,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100002, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4531758486186799885}
+    - targetCorrespondingSourceObject: {fileID: 100002, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6197963416489905526}
   m_SourcePrefab: {fileID: 100100000, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}
 --- !u!1 &1112290995649764848 stripped
 GameObject:
@@ -237,9 +236,19 @@ MonoBehaviour:
   maxMoveDistance: 0
   tgdistance: 0
   playerdistance: 0
-  enemy: {fileID: 0}
-  enemy1: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &6197963416489905526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112290995649764848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673454e2b65454b3a9b6c5f90778644f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1112290995650052560 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}

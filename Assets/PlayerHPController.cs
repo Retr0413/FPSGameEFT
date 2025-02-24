@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // SceneManagerを使用するために追加
 using UnityEngine.UI;
 
 public class PlayerHPController : MonoBehaviour
@@ -11,20 +12,20 @@ public class PlayerHPController : MonoBehaviour
     public int maxHP = 100;
     public int maxArmor = 100;
     public int recoveryAmount = 5;
-    public float chargeDuration = 5f;
-    public float healRate = 10f;
 
     private int currentHP;
     private int currentArmor;
-    private float timeSinceLastDamage = 0f;
-    private bool isRecovering = false;
     private float chargeAmount = 0f;
+    private Animator anim;
 
-    private GameObject healDrone;
+    private GameObject healDrone; // HealDroneの参照
+    private bool isHealDroneActive = false; // HealDroneが有効かどうかを判定
+    private Coroutine healingCoroutine = null; // コルーチンの参照
+
+    private bool isRetrying = false; // リトライシーン遷移中かどうかを判定
 
     void Start()
     {
-        healDrone = GameObject.Find("HealDrone");
         currentHP = maxHP;
         currentArmor = maxArmor;
         hpSlider.maxValue = maxHP;
@@ -33,42 +34,48 @@ public class PlayerHPController : MonoBehaviour
         armorSlider.value = currentArmor;
         chargeSlider.maxValue = 1f;
         chargeSlider.value = 0f;
+        anim = gameObject.GetComponent<Animator>();
     }
 
     void Update()
     {
+        // HealDroneを動的に検索
+        if (!isHealDroneActive)
+        {
+            healDrone = GameObject.FindWithTag("HealDrone"); // HealDroneに"HealDrone"タグを付ける
+            if (healDrone != null && healDrone.activeInHierarchy)
+            {
+                isHealDroneActive = true;
+
+                // HealDroneが有効になった場合、回復のコルーチンを開始
+                if (healingCoroutine == null)
+                {
+                    healingCoroutine = StartCoroutine(HealArmorOverTime());
+                }
+            }
+        }
+        else if (healDrone != null && !healDrone.activeInHierarchy)
+        {
+            isHealDroneActive = false;
+            healDrone = null;
+
+            // HealDroneが無効になった場合、コルーチンを停止
+            if (healingCoroutine != null)
+            {
+                StopCoroutine(healingCoroutine);
+                healingCoroutine = null;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TakeDamage(10);
-            timeSinceLastDamage = 0f;
         }
 
-        timeSinceLastDamage += Time.deltaTime;
-
-        if (armorSlider.value == 0 && timeSinceLastDamage >= 5f && currentHP < maxHP)
-        {
-            RecoverHP(recoveryAmount);
-            isRecovering = true;
-        }
-        else
-        {
-            isRecovering = false;
-        }
-
-        if (healDrone != null)
-        {
-            // Debug.Log("HealDroneの状態: " + healDrone.activeInHierarchy);
-        }
-
-        if (healDrone != null && healDrone.activeInHierarchy)
-        {
-            RecoverArmor(Time.deltaTime * healRate);
-            RecoverHP((int)(Time.deltaTime * healRate));
-        }
-
+        // チャージ処理
         if (Input.GetKey(KeyCode.Z) && currentArmor < maxArmor)
         {
-            chargeAmount += Time.deltaTime / chargeDuration;
+            chargeAmount += Time.deltaTime / 5f; // チャージ時間を5秒に設定
             chargeSlider.value = Mathf.Clamp01(chargeAmount);
 
             if (chargeSlider.value >= 1f)
@@ -103,31 +110,48 @@ public class PlayerHPController : MonoBehaviour
             if (currentHP < 0)
             {
                 currentHP = 0;
-                Debug.Log("Player is dead!");
+                if (!isRetrying)
+                {
+                    StartCoroutine(HandlePlayerDeath());
+                }
             }
             hpSlider.value = currentHP;
         }
-        timeSinceLastDamage = 0f;
     }
 
-    private void RecoverHP(int amount)
+    private IEnumerator HandlePlayerDeath()
     {
-        currentHP += amount;
-        if (currentHP > maxHP)
-        {
-            currentHP = maxHP;
-        }
-        hpSlider.value = currentHP;
+        isRetrying = true;
+        anim.SetBool("Die", true);
+        Debug.Log("Player is dead! Retrying in 2 seconds...");
+        yield return new WaitForSeconds(5f);
+
+        // シーンをRetrySceneに遷移
+        SceneManager.LoadScene("RetryScene");
     }
 
-    private void RecoverArmor(float amount)
+    private void RecoverArmor(int amount)
     {
-        currentArmor += (int)amount;
+        currentArmor += amount;
         if (currentArmor > maxArmor)
         {
             currentArmor = maxArmor;
         }
         armorSlider.value = currentArmor;
+    }
+
+    private IEnumerator HealArmorOverTime()
+    {
+        while (isHealDroneActive)
+        {
+            // 2秒ごとにArmorを5回復
+            if (currentArmor < maxArmor)
+            {
+                RecoverArmor(5);
+            }
+
+            yield return new WaitForSeconds(2f); // 2秒間隔
+        }
     }
 
     private void OnTriggerEnter(Collider other)

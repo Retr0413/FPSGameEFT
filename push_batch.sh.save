@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# 送信するファイル数
+BATCH_SIZE=50
+BRANCH_NAME="main"
+
+# 変更・未追跡のファイルを取得（100MB以上のファイルを除外）
+git ls-files --others --modified --deleted --exclude-standard | while read file; do
+  if [ -f "$file" ]; then
+    FILE_SIZE=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file")  # Linux & macOS対応
+    if [ "$FILE_SIZE" -lt 104857600 ]; then  # 100MB未満のファイルのみリスト化
+      echo "$file"
+    fi
+  else
+    echo "$file"  # 削除ファイルはそのままリストに追加
+  fi
+done > file_list.txt
+
+# 一度に 50 ファイルずつプッシュ
+while [ -s file_list.txt ]; do
+  head -n $BATCH_SIZE file_list.txt | xargs -I {} git add "{}"
+  git commit -m "Batch commit: Next $BATCH_SIZE files"
+  git push origin $BRANCH_NAME
+  sed -i '' '1,'"${BATCH_SIZE}"'d' file_list.txt  # macOS & Linux対応
+done
+
+echo "✅ すべてのファイルをプッシュしました！"

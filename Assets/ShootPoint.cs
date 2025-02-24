@@ -6,31 +6,73 @@ public class ShootPoint : MonoBehaviour
 {
     public GameObject MortarBullet; // 弾丸のPrefab
     public Transform shootpoint;    // 発射位置
-    public Transform target;        // ターゲットの位置
 
-    public float shootForce = 10f; // デフォルトの射出力
+    public float shootForce = 10f;  // デフォルトの射出力
     public float launchSpeed = 20f; // 発射速度
+
+    private GameObject[] enemyMobs; // EnemyMob タグの敵を格納
+    private GameObject[] enemyBosses; // EnemyBoss タグの敵を格納
+    private Transform target; // 現在のターゲット
 
     void Start()
     {
-        // ターゲットオブジェクトをシーンから探す（オブジェクト名に注意）
-        GameObject targetObject = GameObject.Find("Rougue Variant");
-        if (targetObject != null)
-        {
-            target = targetObject.transform;
-        }
-        else
-        {
-            Debug.LogError("Target object 'Rougue Variant' not found in the scene.");
-        }
+        // 初期設定としてターゲットを検索
+        FindNearestTarget();
     }
 
     void Update()
     {
+        // ターゲットがない場合は再検索
+        if (target == null)
+        {
+            FindNearestTarget();
+        }
+
         // スペースキーで発射
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && target != null)
         {
             Shoot();
+        }
+    }
+
+    void FindNearestTarget()
+    {
+        enemyMobs = GameObject.FindGameObjectsWithTag("EnemyMob");
+        enemyBosses = GameObject.FindGameObjectsWithTag("EnemyBoss");
+
+        float nearestDistance = Mathf.Infinity;
+        GameObject nearestEnemy = null;
+
+        // EnemyMob タグの敵を探索
+        foreach (var enemy in enemyMobs)
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = enemy;
+            }
+        }
+
+        // EnemyBoss タグの敵を探索
+        foreach (var boss in enemyBosses)
+        {
+            float distance = Vector3.Distance(transform.position, boss.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = boss;
+            }
+        }
+
+        if (nearestEnemy != null)
+        {
+            target = nearestEnemy.transform;
+            Debug.Log($"Target locked: {target.name}");
+        }
+        else
+        {
+            Debug.Log("No enemies found!");
         }
     }
 

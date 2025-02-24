@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MuzzleAssult : MonoBehaviour
 {
@@ -15,25 +16,26 @@ public class MuzzleAssult : MonoBehaviour
 
     [SerializeField] GameObject effect;  // エフェクト用のGameObject
     [SerializeField] LayerMask ignoreLayer;
+    [SerializeField] Text ammoText; // 残弾数と所持弾数を表示するテキスト
 
     GameObject playerCam;
 
     int bulletsShot, bulletsLeft;
+    int totalAmmo = 1000; // 所持弾数
     bool Shooting, readyToShoot;
     public bool reloading;
     public bool allowInvoke = true;
     public Transform cameraTransform; // カメラのTransformを設定
     public float rotationSpeed = 5f;
 
-    // Start is called before the first frame update
     void Start()
     {
         playerCam = GameObject.FindWithTag("MainCamera");
         bulletsLeft = MagazineSize;
         readyToShoot = true;
+        UpdateAmmoText();
     }
 
-    // Update is called once per frame
     void Update()
     {
         ImputHandler();
@@ -55,7 +57,7 @@ public class MuzzleAssult : MonoBehaviour
             bulletsShot = 0;
             Shoot();
         }
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < MagazineSize && !reloading)
+        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < MagazineSize && !reloading && totalAmmo > 0)
         {
             Reload();
         }
@@ -78,18 +80,19 @@ public class MuzzleAssult : MonoBehaviour
             targetPoint = ray.GetPoint(10);
         }
 
-        // 弾丸を生成して発射
-        GameObject newbullet = Instantiate(bullet, this.transform.position, Quaternion.identity);
+        // 弾丸を生成して発射 (銃口のRotationを適用)
+        GameObject newbullet = Instantiate(bullet, shootPoint.position, shootPoint.rotation);
         Rigidbody bulletRigidbody = newbullet.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(this.cameraTransform.forward * ShootForce * 2);
         Destroy(newbullet, 20f);
 
-        // エフェクトをMuzzleの位置に生成して1秒後に消去
-        GameObject newEffect = Instantiate(effect, shootPoint.position, shootPoint.rotation, shootPoint);  // Muzzleを親としてエフェクトを生成
-        Destroy(newEffect, 0.5f);  // 1秒後にエフェクトを削除
+        // エフェクトをMuzzleの位置に生成して削除
+        GameObject newEffect = Instantiate(effect, shootPoint.position, shootPoint.rotation, shootPoint); // 銃口を親に設定
+        Destroy(newEffect, 0.5f);
 
         bulletsLeft--;
         bulletsShot++;
+        UpdateAmmoText();
 
         if (allowInvoke)
         {
@@ -107,12 +110,24 @@ public class MuzzleAssult : MonoBehaviour
     private void Reload()
     {
         reloading = true;
-        Invoke(nameof(ReloadFinished), 1);
+        int bulletsToReload = MagazineSize - bulletsLeft;
+        int bulletsToDeduct = Mathf.Min(bulletsToReload, totalAmmo);
+        totalAmmo -= bulletsToDeduct;
+        bulletsLeft += bulletsToDeduct;
+        UpdateAmmoText();
+        Invoke(nameof(ReloadFinished), ReloadTime);
     }
 
     private void ReloadFinished()
     {
-        bulletsLeft = MagazineSize;
         reloading = false;
+    }
+
+    private void UpdateAmmoText()
+    {
+        if (ammoText != null)
+        {
+            ammoText.text = $"残弾数: {bulletsLeft}/{MagazineSize} | 所持弾数: {totalAmmo}";
+        }
     }
 }

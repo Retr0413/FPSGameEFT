@@ -4,97 +4,101 @@ using UnityEngine;
 
 public class DroneMuzzle : MonoBehaviour
 {
-    public GameObject bulletdrone;
-    public Transform Gun;
-    public float firerate = 0.2f;
-    public float bulletspeed = 200f;
-    public float spread = 0.1f;
-    public float BattleRange = 20f;
-    public float MagazineSize = 50f;
-    public float ReloadTime = 5f;
-    [SerializeField] GameObject effect;
+    public GameObject bulletPrefab;   // 弾丸のPrefab
+    public Transform gunPoint;       // 弾を発射する場所
+    public float fireRate = 10f;    // 射撃間隔
+    public float bulletSpeed = 200f; // 弾速
+    public float battleRange = 50f;  // 射程
+    [SerializeField] GameObject effect; // 発射エフェクト
 
-    private Transform enemytransform;
-    private bool ReadyFire = true;
-    private bool allowInvoke = true;
-    private bool Reload;
+    private GameObject[] enemies; // 検索した敵を格納
+    private Transform targetEnemy; // 現在のターゲット
+    private float nextFireTime = 0f; // 次の発射可能時間
 
-    public float magazineLeft;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        GameObject enemy = GameObject.Find("Rougue Variant");
-        enemytransform = enemy.transform;
-        magazineLeft = MagazineSize;
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (enemytransform == null)
-        {
-            return;
-        }
+        // タグで敵を検索
+        GameObject nearestEnemy = FindNearestEnemy();
 
-        float distanceenemy = Vector3.Distance(transform.position, enemytransform.position);
-        if (distanceenemy < BattleRange && ReadyFire && !Reload)
+        if (nearestEnemy != null)
         {
-            Attack();
+            targetEnemy = nearestEnemy.transform;
+
+            // 敵を向く
+            LookAtEnemy(targetEnemy);
+
+            // 射程内なら弾を発射
+            float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.position);
+            if (distanceToEnemy <= battleRange && Time.time >= nextFireTime)
+            {
+                FireBullet();
+                nextFireTime = Time.time + fireRate;
+            }
         }
     }
-    public void Attack()
+
+    void LookAtEnemy(Transform enemy)
     {
-        ReadyFire = false;
+        Vector3 direction = enemy.position - transform.position;
+        direction.y = 0; // 水平方向に限定
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+    }
 
-        Vector3 directionToenemy = (enemytransform.position - Gun.position).normalized;
-        Gun.rotation = Quaternion.LookRotation(directionToenemy);
+    void FireBullet()
+    {
+        // 弾丸を生成
+        GameObject bullet = Instantiate(bulletPrefab, gunPoint.position, gunPoint.rotation);
 
-        GameObject bullet = Instantiate(bulletdrone, Gun.position, Gun.rotation);
-
-        Vector3 spreadVector = new Vector2(
-            Random.Range(-spread, spread),
-            Random.Range(-spread, spread)
-        );
-
-        Vector3 bulletDirection = directionToenemy + spreadVector;
-        bullet.GetComponent<Rigidbody>().velocity = bulletDirection * bulletspeed;
-
-        GameObject newEffect = Instantiate(effect, Gun.position, Gun.rotation, Gun); 
-        Destroy(newEffect, 0.5f); 
-
-        if (allowInvoke)
+        // 弾丸に速度を付与
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            Invoke("ResetShot", 1f / firerate);
-            allowInvoke = false;
+            rb.velocity = gunPoint.forward * bulletSpeed;
         }
 
-        if (magazineLeft <= 0)
+        // 発射エフェクトを生成
+        if (effect != null)
         {
-            Reloading();
-            return;
+            GameObject muzzleEffect = Instantiate(effect, gunPoint.position, gunPoint.rotation);
+            Destroy(muzzleEffect, 0.5f);
         }
 
-        magazineLeft--;
-        Destroy(bullet, 10);
+        // 弾丸の寿命を設定
+        Destroy(bullet, 5f);
     }
 
-    private void ResetShot()
+    GameObject FindNearestEnemy()
     {
-        ReadyFire = true;
-        allowInvoke = true;
-    }
+        // タグで敵を検索
+        GameObject[] enemyMobs = GameObject.FindGameObjectsWithTag("EnemyMob");
+        GameObject[] enemyBosses = GameObject.FindGameObjectsWithTag("EnemyBoss");
 
-    private void Reloading()
-    {
-        Reload = true;
-        Invoke(nameof(Set), ReloadTime);
-    }
+        GameObject nearestEnemy = null;
+        float nearestDistance = Mathf.Infinity;
 
-    private void Set()
-    {
-        magazineLeft = MagazineSize;
-        Reload = false;
+        // EnemyMob タグの敵を探索
+        foreach (var enemy in enemyMobs)
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = enemy;
+            }
+        }
+
+        // EnemyBoss タグの敵を探索
+        foreach (var boss in enemyBosses)
+        {
+            float distance = Vector3.Distance(transform.position, boss.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = boss;
+            }
+        }
+
+        return nearestEnemy;
     }
 }

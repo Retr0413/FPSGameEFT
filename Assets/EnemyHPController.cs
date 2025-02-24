@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // シーン遷移に必要な名前空間
 using UnityEngine.UI;
 
 public class EnemyHPController : MonoBehaviour
@@ -20,6 +21,10 @@ public class EnemyHPController : MonoBehaviour
     private float chargeAmount = 0f;
     private float ArmorRepear = 3;
 
+    private GameObject healDroneEnemy; // HealDroneEnemyの参照
+    private bool isHealDroneActive = false; // HealDroneEnemyが有効かどうか
+    private Coroutine healCoroutine = null; // コルーチンの参照
+
     private Animator animator;
 
     void Start()
@@ -38,6 +43,34 @@ public class EnemyHPController : MonoBehaviour
 
     void Update()
     {
+        // HealDroneEnemyを動的に検索
+        if (!isHealDroneActive)
+        {
+            healDroneEnemy = GameObject.FindWithTag("HealDroneEnemy"); // HealDroneEnemyに"HealDroneEnemy"タグを付ける
+            if (healDroneEnemy != null && healDroneEnemy.activeInHierarchy)
+            {
+                isHealDroneActive = true;
+
+                // HealDroneEnemyが有効の場合、回復のコルーチンを開始
+                if (healCoroutine == null)
+                {
+                    healCoroutine = StartCoroutine(HealArmorOverTime());
+                }
+            }
+        }
+        else if (healDroneEnemy != null && !healDroneEnemy.activeInHierarchy)
+        {
+            isHealDroneActive = false;
+            healDroneEnemy = null;
+
+            // HealDroneEnemyが無効になった場合、回復のコルーチンを停止
+            if (healCoroutine != null)
+            {
+                StopCoroutine(healCoroutine);
+                healCoroutine = null;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TakeDamage(10);
@@ -77,6 +110,19 @@ public class EnemyHPController : MonoBehaviour
         }
     }
 
+    private IEnumerator HealArmorOverTime()
+    {
+        while (isHealDroneActive)
+        {
+            // 1秒おきにArmorを2回復
+            if (currentArmor < maxArmor)
+            {
+                RecoverArmor(2);
+            }
+            yield return new WaitForSeconds(2f); // 1秒間隔
+        }
+    }
+
     public void TakeDamage(int damage)
     {
         if (currentArmor > 0)
@@ -111,6 +157,16 @@ public class EnemyHPController : MonoBehaviour
         hpSlider.value = currentHP;
     }
 
+    private void RecoverArmor(int amount)
+    {
+        currentArmor += amount;
+        if (currentArmor > maxArmor)
+        {
+            currentArmor = maxArmor;
+        }
+        armorSlider.value = currentArmor;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Bullet")
@@ -133,6 +189,15 @@ public class EnemyHPController : MonoBehaviour
         {
             animator.SetBool("Die", true);
         }
+
+        // 2秒後にシーンを移動
+        StartCoroutine(LoadGameClearSceneAfterDelay(2f));
         Destroy(gameObject, 3f);
+    }
+
+    private IEnumerator LoadGameClearSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("GameClear");
     }
 }

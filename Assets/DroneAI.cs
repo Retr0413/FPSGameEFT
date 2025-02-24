@@ -12,47 +12,82 @@ public class DroneAI : MonoBehaviour
     NavMeshAgent agent;
     public float tgdistance;
     public float playerdistance;
-    public GameObject enemy;
-    public GameObject enemy1;
     public GameObject player;
+
+    private GameObject[] enemyMobs;
+    private GameObject[] enemyBosses;
+    private GameObject targetEnemy; // 特定のターゲット
+    private bool isTargetLocked = false; // ターゲットがロックされているか
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         ResetWalkParameters();
-        enemy = GameObject.Find("Rougue Variant Assult");
-        enemy1 = GameObject.Find("Rougue Variant LMG");
-        player = GameObject.Find("PlayerPMC");
+        player = GameObject.Find("PlayerPMC"); // プレイヤーを名前で検索
+        if (player == null)
+        {
+            Debug.LogError("Player object not found with name 'PlayerPMC'. Please assign the correct name.");
+        }
     }
 
     void Update()
     {
-        tgdistance = Vector3.Distance(transform.position, enemy.transform.position);
-        tgdistance = Vector3.Distance(transform.position, enemy1.transform.position);
-        playerdistance = Vector3.Distance(transform.position, player.transform.position);
-        if (tgdistance > 100 || tgdistance < 15)
+        if (!isTargetLocked)
         {
-            UpdateAgentMovement();
+            // タグで敵を検索して最も近い敵をロック
+            enemyMobs = GameObject.FindGameObjectsWithTag("EnemyMob");
+            enemyBosses = GameObject.FindGameObjectsWithTag("EnemyBoss");
+
+            targetEnemy = GetNearestEnemy();
+
+            if (targetEnemy != null)
+            {
+                isTargetLocked = true; // ターゲットをロック
+                Debug.Log($"Target locked: {targetEnemy.name}");
+            }
         }
-        if (tgdistance < 50 && tgdistance > 15)
+
+        if (isTargetLocked && targetEnemy != null)
         {
-            agent.destination = enemy.transform.position;
-            agent.destination = enemy1.transform.position;
+            // ターゲットへの距離を計算
+            tgdistance = Vector3.Distance(transform.position, targetEnemy.transform.position);
+
+            if (tgdistance <= 50f)
+            {
+                FlyTowardsTarget(targetEnemy); // ターゲットの方向に飛ぶ
+            }
+            else
+            {
+                // ターゲットに向かって地上を移動
+                agent.destination = targetEnemy.transform.position;
+                LookAtEnemy(targetEnemy);
+            }
         }
-        else if (tgdistance < 50)
+        else if (player != null)
         {
-            Lookenemy();
-        }
-        else if (playerdistance < 30 && playerdistance > 5 && tgdistance > 50)
-        {
+            // ターゲットがいない場合、プレイヤーを追尾
+            playerdistance = Vector3.Distance(transform.position, player.transform.position);
             agent.destination = player.transform.position;
         }
     }
 
-    void Lookenemy()
+    void FlyTowardsTarget(GameObject target)
     {
+        // ターゲットの方向に飛ぶ
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+
+        // ドローンの移動速度を設定
+        float flySpeed = 10f; // 飛行速度
+        transform.position += direction * flySpeed * Time.deltaTime;
+
+        LookAtEnemy(target);
+    }
+
+    void LookAtEnemy(GameObject enemy)
+    {
+        // ターゲットの方向を見る
         Vector3 direction = enemy.transform.position - transform.position;
-        direction.y = 0;
+        direction.y = 0; // 水平方向に限定
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
@@ -67,34 +102,33 @@ public class DroneAI : MonoBehaviour
         walkDirection = new Vector3(x, 0f, z).normalized;
     }
 
-
-    void UpdateAgentMovement()
+    GameObject GetNearestEnemy()
     {
-        elapsedTime += Time.deltaTime;
+        GameObject nearestEnemy = null;
+        float nearestDistance = Mathf.Infinity;
 
-        if (elapsedTime >= interval)
+        // EnemyMob タグの敵を探索
+        foreach (var enemy in enemyMobs)
         {
-            MoveTowardsTarget();
-            ResetWalkParameters();
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = enemy;
+            }
         }
-    }
 
-
-    void MoveTowardsTarget()
-    {
-        var sourcePos = transform.position;
-        //sourcePos.y -= 1f;
-        var targetPos = sourcePos + walkDirection * maxMoveDistance;
-        var blocked = NavMesh.Raycast(sourcePos, targetPos, out NavMeshHit hitInfo, NavMesh.AllAreas);
-
-        if (blocked)
+        // EnemyBoss タグの敵を探索
+        foreach (var boss in enemyBosses)
         {
-            agent.SetDestination(hitInfo.position);
+            float distance = Vector3.Distance(transform.position, boss.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = boss;
+            }
         }
-        else
-        {
-            agent.SetDestination(targetPos);
-        }
-        Debug.DrawLine(sourcePos, targetPos, blocked ? Color.red : Color.green, interval);
+
+        return nearestEnemy;
     }
 }

@@ -1100,16 +1100,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78e595d2752f6049b08201d9e2051c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletenemy: {fileID: 8978690136975311388, guid: 869de0bd6a080164391329eaa80422bd, type: 3}
+  bulletenemy: {fileID: 7640803511288641129, guid: c0147a24efee34b37b4af801988736f8, type: 3}
   Gun: {fileID: 426813182075899885}
   firerate: 30
   bulletspeed: 200
-  spread: 0.1
+  spread: 0
   BattleRange: 50
   MagazineSize: 100
   ReloadTime: 10
   effect: {fileID: 8174777166450888692, guid: ecea615ef12241c46b756eda355ffae4, type: 3}
-  magazineLeft: 0
 --- !u!1001 &403946440921362380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1377,8 +1376,8 @@ MonoBehaviour:
   detectRange: 10
   itemPrefab: {fileID: 6195331076136527857, guid: 785c945e548958a40abae6d0b35f6a8c, type: 3}
   itemPrefab1: {fileID: 547535305580297280, guid: a21996d6ad2fafa4f8b608255ab9fdb3, type: 3}
-  minWaitTime: 2
-  maxWaitTime: 5
+  minWaitTime: 1
+  maxWaitTime: 2
 --- !u!54 &632399906391644826
 Rigidbody:
   m_ObjectHideFlags: 0

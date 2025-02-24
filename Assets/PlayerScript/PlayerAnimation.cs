@@ -26,7 +26,7 @@ public class PlayerAnimation : MonoBehaviour
             anim.SetBool("Walk", false);
         }
 
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
         {
             anim.SetBool("RunForward", true);
         }
@@ -39,9 +39,9 @@ public class PlayerAnimation : MonoBehaviour
         {
             anim.SetBool("Reload", true);
         }
-        else
+        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.R) || Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.R) || Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.R) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.R) || Input.GetKey(KeyCode.R))
         {
-            anim.SetBool("Reload", false);
+            anim.SetTrigger("Reload");
         }
 
         // if (Input.GetKey(KeyCode.C))

@@ -240,18 +240,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4179033462271013308}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: -135.7}
+  m_LocalScale: {x: 66.66669, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8185470802579904387}
-  m_Father: {fileID: 3439941433758361159}
+  m_Father: {fileID: 6785348274778715416}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -2013.3333, y: -53.649998}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4828504987766311974
@@ -288,7 +288,7 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -459,7 +459,6 @@ MonoBehaviour:
   MagazineSize: 30
   ReloadTime: 10
   effect: {fileID: 8174777166450888692, guid: ecea615ef12241c46b756eda355ffae4, type: 3}
-  magazineLeft: 0
 --- !u!1 &5223116849289533718
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,7 +603,6 @@ RectTransform:
   m_Children:
   - {fileID: 5355712508080695589}
   - {fileID: 8108260805883743554}
-  - {fileID: 9190029581400713694}
   m_Father: {fileID: 2874696275307255492}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -695,6 +693,7 @@ RectTransform:
   m_Children:
   - {fileID: 6569968265232539395}
   - {fileID: 9002650958605960502}
+  - {fileID: 9190029581400713694}
   m_Father: {fileID: 1585577815920622336}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -883,7 +882,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6695035880356256256
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1003,9 +1002,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletenemy: {fileID: 2001665266868944088, guid: 34c248f2bef264f48b5709e7b15499b2, type: 3}
   Gun: {fileID: 8438695919089443147}
-  firerate: 5
+  firerate: 2
   bulletspeed: 50
-  spread: 0.4
+  spread: 0.00001
   BattleRange: 50
   MagazineSize: 10
   ReloadTime: 10
@@ -1046,7 +1045,7 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 75, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1122,7 +1121,7 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1141,7 +1140,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8581547639401605997}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1182,7 +1181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2874696275307255492
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1408,6 +1407,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rougue Variant Mob Shotgun
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b30b156a9c55e3d4f80dabddf7f50e06, type: 3}
+      propertyPath: m_TagString
+      value: EnemyMob
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: b30b156a9c55e3d4f80dabddf7f50e06, type: 3}
       propertyPath: m_Controller
       value: 
@@ -1443,7 +1446,7 @@ PrefabInstance:
       addedObject: {fileID: 3611811749478546839}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b30b156a9c55e3d4f80dabddf7f50e06, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8036812658327171189}
+      addedObject: {fileID: 4105365604821657678}
   m_SourcePrefab: {fileID: 100100000, guid: b30b156a9c55e3d4f80dabddf7f50e06, type: 3}
 --- !u!4 &87005525285833580 stripped
 Transform:
@@ -1517,7 +1520,9 @@ MonoBehaviour:
   animationspeed: 0.1
   tgdistance: 0
   player: {fileID: 0}
---- !u!114 &8036812658327171189
+  speed: 1
+  heightChangeSpeed: 2
+--- !u!114 &4105365604821657678
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1526,16 +1531,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1459691896716544501}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25ce449df534ce647b157e2f4415e502, type: 3}
+  m_Script: {fileID: 11500000, guid: da74b7bfca90641eeada665e8acd71ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hpSlider: {fileID: 4333845502950015933}
-  armorSlider: {fileID: 5186827508813410693}
-  chargeSlider: {fileID: 6726900937184645232}
   maxHP: 100
-  maxArmor: 100
-  recoveryAmount: 5
-  chargeDuration: 5
+  recoveryAmount: 0
 --- !u!4 &2236616276505924431 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b30b156a9c55e3d4f80dabddf7f50e06, type: 3}

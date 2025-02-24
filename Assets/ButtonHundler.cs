@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // SceneManager を使用するために追加
 
 public class ButtonHundler : MonoBehaviour
 {
@@ -10,13 +11,8 @@ public class ButtonHundler : MonoBehaviour
     public void OnButtonClicked()
     {
         Debug.Log("Button Clicked");
-        if (targetObject != null)
-        {
-            targetObject.OnButtonPressed(); // StartMove の関数を呼び出し
-        }
-        else
-        {
-            Debug.LogWarning("Target object is not set.");
-        }
+
+        // BattleScene に遷移
+        SceneManager.LoadScene("BattleScene");
     }
 }

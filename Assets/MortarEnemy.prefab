@@ -167,6 +167,8 @@ MonoBehaviour:
   target: {fileID: 0}
   shootForce: 10
   launchSpeed: 20
+  shootingDistance: 300
+  shootingInterval: 10
 --- !u!1 &6343947662646594881
 GameObject:
   m_ObjectHideFlags: 0
@@ -5186,6 +5188,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4069943767480283148}
+  - component: {fileID: 2958597450047205134}
+  - component: {fileID: 5187275982232364785}
   m_Layer: 0
   m_Name: MortarEnemy
   m_TagString: Untagged
@@ -5200,7 +5204,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8440771200776876471}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.92, y: 0, z: -54}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
@@ -5208,5 +5212,30 @@ Transform:
   - {fileID: 4685676247076776335}
   - {fileID: 1021085507157310837}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2958597450047205134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8440771200776876471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84bb76998778b2543966d94cf1d7f1bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5187275982232364785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8440771200776876471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0195367d32df94640bbea836d88af6ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 20

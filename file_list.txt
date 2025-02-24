@@ -1,0 +1,53 @@
+Assets/japanese_full.txt.meta
+Assets/reloading 1.fbx
+Assets/reloading 1.fbx.meta
+Assets/rifle aiming idle 1.fbx
+Assets/rifle aiming idle 1.fbx.meta
+Assets/rifle run.fbx
+Assets/rifle run.fbx.meta
+Assets/strafe (2).fbx
+Assets/strafe (2).fbx.meta
+Assets/strafe.fbx
+Assets/strafe.fbx.meta
+Assets/walking 1.fbx
+Assets/walking 1.fbx.meta
+file_list.txt
+push_batch.sh.save
+temp_list.txt
+Assets/AttackDroneEnemy.prefab
+Assets/AttackDronePlayer.prefab
+Assets/BombMineEnemy.prefab
+Assets/BombMove.cs
+Assets/BossAirCraftMove.cs
+Assets/ButtonHundler.cs
+Assets/CameraScript/AimMove.cs
+Assets/DroneAI.cs
+Assets/DroneMuzzle.cs
+Assets/DropBossEnemy/Rougue Variant Assult.prefab
+Assets/DropBossEnemy/Rougue Variant LMG.prefab
+Assets/Enemy/EnemyMove.controller
+Assets/Enemy/EnemyMoveAI.cs
+Assets/Enemy/Rougue Variant Mob Assult.prefab
+Assets/Enemy/Rougue Variant Mob Shotgun.prefab
+Assets/EnemyBullet.prefab
+Assets/EnemyHPController.cs
+Assets/EnemyMuzzle.cs
+Assets/EnemyShotgunBullet.prefab
+Assets/HealDroneEnemy.prefab
+Assets/Inventory/Inventry.cs
+Assets/Inventory/ItemData/AttackDrone Variant.prefab
+Assets/Inventory/ItemData/Mortar.prefab
+Assets/Kevin Iglesias/Basic Motions/AnimatorControllers/BasicMotions@Idle.controller
+Assets/MortarEnemy.prefab
+Assets/MuzzleAssult.cs
+Assets/PlayerHPController.cs
+Assets/PlayerScript/PlayerAnimation.cs
+Assets/Scenes/SampleScene.unity
+Assets/Scenes/SampleScene.unity
+Assets/Scenes/SampleScene.unity.meta
+Assets/Scenes/SampleScene.unity.meta
+Assets/Scenes/SampleScene/NavMesh.asset
+Assets/ShootPoint.cs
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+ProjectSettings/EditorBuildSettings.asset
+ProjectSettings/TagManager.asset

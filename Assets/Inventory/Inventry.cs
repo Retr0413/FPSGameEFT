@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,13 @@ public class Inventry : MonoBehaviour
 
     private Transform playerTransform;
 
+    private float cooldown1 = 0f;
+    private float cooldown2 = 0f;
+    private float cooldown3 = 0f;
+    private float cooldown4 = 0f;
+
+    private const float cooldownTime = 40f;
+
     private void Awake()
     {
         if (instance == null)
@@ -56,6 +64,12 @@ public class Inventry : MonoBehaviour
 
     public void Add(Item item)
     {
+        if (items.Count >= 2)
+        {
+            Debug.LogWarning("The inventory can hold only 2 items.");
+            return;
+        }
+
         items.Add(item);
         inventryUI.UpdateUI();
     }
@@ -87,25 +101,25 @@ public class Inventry : MonoBehaviour
             return;
         }
 
-        if (!string.IsNullOrEmpty(itemToCheck1) && prefab1 != null && ContainsItem(itemToCheck1) && !isSpawned1)
+        if (Time.time > cooldown1 && !string.IsNullOrEmpty(itemToCheck1) && prefab1 != null && ContainsItem(itemToCheck1))
         {
             targetGameObject1 = Instantiate(prefab1, playerTransform.position + Vector3.forward * 2, Quaternion.identity);
-            isSpawned1 = true;
+            cooldown1 = Time.time + cooldownTime; // クールダウン設定
         }
-        if (!string.IsNullOrEmpty(itemToCheck2) && prefab2 != null && ContainsItem(itemToCheck2) && !isSpawned2)
+        if (Time.time > cooldown2 && !string.IsNullOrEmpty(itemToCheck2) && prefab2 != null && ContainsItem(itemToCheck2))
         {
             targetGameObject2 = Instantiate(prefab2, playerTransform.position + Vector3.right * 2, Quaternion.identity);
-            isSpawned2 = true;
+            cooldown2 = Time.time + cooldownTime;
         }
-        if (!string.IsNullOrEmpty(itemToCheck3) && prefab3 != null && ContainsItem(itemToCheck3) && !isSpawned3)
+        if (Time.time > cooldown3 && !string.IsNullOrEmpty(itemToCheck3) && prefab3 != null && ContainsItem(itemToCheck3))
         {
             targetGameObject3 = Instantiate(prefab3, playerTransform.position + Vector3.left * 2, Quaternion.identity);
-            isSpawned3 = true;
+            cooldown3 = Time.time + cooldownTime;
         }
-        if (!string.IsNullOrEmpty(itemToCheck4) && prefab4 != null && ContainsItem(itemToCheck4) && !isSpawned4)
+        if (Time.time > cooldown4 && !string.IsNullOrEmpty(itemToCheck4) && prefab4 != null && ContainsItem(itemToCheck4))
         {
             targetGameObject4 = Instantiate(prefab4, playerTransform.position + Vector3.back * 2, Quaternion.identity);
-            isSpawned4 = true;
+            cooldown4 = Time.time + cooldownTime;
         }
     }
 

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3657999896281350879}
-  - component: {fileID: 1671887667846462243}
+  - component: {fileID: 4344098067462692859}
   m_Layer: 0
   m_Name: DroneMuzzle
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 2308532416534578871}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1671887667846462243
+--- !u!114 &4344098067462692859
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,19 +41,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4934323509394198005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 607a524b5306c5141929ef7f9baa5164, type: 3}
+  m_Script: {fileID: 11500000, guid: c9d4c952d737c464db48f48b2710105b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletdrone: {fileID: 5919801030428060746, guid: a12fd4e0b77e89d418350afb81f97d6f, type: 3}
-  Gun: {fileID: 3657999896281350879}
-  firerate: 0.2
-  bulletspeed: 200
-  spread: 0.1
-  BattleRange: 20
-  MagazineSize: 50
-  ReloadTime: 5
+  bulletPrefab: {fileID: 7640803511288641129, guid: c0147a24efee34b37b4af801988736f8, type: 3}
+  gunPoint: {fileID: 3657999896281350879}
+  fireRate: 0.2
+  bulletSpeed: 200
+  battleRange: 50
   effect: {fileID: 8174777166450888692, guid: ecea615ef12241c46b756eda355ffae4, type: 3}
-  magazineLeft: 0
 --- !u!1001 &2308532416534453301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -68,7 +64,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}
       propertyPath: m_LocalScale.x
@@ -266,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2918ff45367044740ab8da556ebd5af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyTime: 20
+  destroyTime: 40
 --- !u!4 &2308532416534578871 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}

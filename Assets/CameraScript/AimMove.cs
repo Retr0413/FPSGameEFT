@@ -48,7 +48,7 @@ public class AimMove : MonoBehaviour
 
         targetPosition = targetObject.transform.position;
         MoveToTarget(targetPosition);
-        Debug.Log("Aiming and moving towards target: " + targetPosition);
+        //Debug.Log("Aiming and moving towards target: " + targetPosition);
     }
 
     void MoveToTarget(Vector3 position)
@@ -59,12 +59,12 @@ public class AimMove : MonoBehaviour
         {
             Vector3 move = direction.normalized * moveSpeed * Time.deltaTime;
             transform.position += move;
-            Debug.Log("Moving towards: " + position + " | Current position: " + transform.position);
+            //Debug.Log("Moving towards: " + position + " | Current position: " + transform.position);
         }
         else
         {
             transform.position = position;
-            Debug.Log("Reached position: " + position);
+            //Debug.Log("Reached position: " + position);
         }
     }
 
@@ -74,6 +74,6 @@ public class AimMove : MonoBehaviour
 
         reverseLookPosition = reverseLookObject.transform.position;
         MoveToTarget(reverseLookPosition);
-        Debug.Log("Following reverse look object: " + reverseLookPosition);
+        //Debug.Log("Following reverse look object: " + reverseLookPosition);
     }
 }

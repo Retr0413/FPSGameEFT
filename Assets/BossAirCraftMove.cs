@@ -22,13 +22,17 @@ public class BossAirCraftMove : MonoBehaviour
     public GameObject[] wings;
     private float initialYPosition;
 
-    public GameObject enemyPrefab;
-    public GameObject enemyPrefab1;
+    public GameObject enemyType1;
+    public GameObject enemyType2;
 
-    private bool enemiesSpawned = false;
+    public Vector3 spawnAreaMin;
+    public Vector3 spawnAreaMax;
 
-    public float heightChangeSpeed = 2f;
-    private float targetHeight;
+    public int totalEnemies = 10;
+
+    public Transform parentObject;
+
+    private bool enemiesSpawned = false; // 敵が既に生成されたかどうかを判定するフラグ
     private bool isDead = false;
     public GameObject explosionPrefab;
 
@@ -40,7 +44,6 @@ public class BossAirCraftMove : MonoBehaviour
         ResetWalkParameters();
         circlingCenter = transform.position;
         initialYPosition = transform.position.y;
-        targetHeight = initialYPosition;
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
     }
@@ -79,13 +82,12 @@ public class BossAirCraftMove : MonoBehaviour
     private void SmoothUpdateHeight()
     {
         float currentHeight = transform.position.y;
-        float newHeight = Mathf.MoveTowards(currentHeight, targetHeight, heightChangeSpeed * Time.deltaTime);
+        float newHeight = Mathf.MoveTowards(currentHeight, initialYPosition, speed * Time.deltaTime);
         transform.position = new Vector3(transform.position.x, newHeight, transform.position.z);
     }
 
     private void PerformCircling()
     {
-        float hoverHeight = Mathf.Sin(Time.time * 0.5f) * 2f;
         angle += circleSpeed * Time.deltaTime;
         float radian = angle * Mathf.Deg2Rad;
 
@@ -116,10 +118,6 @@ public class BossAirCraftMove : MonoBehaviour
 
         Vector3 movement = walkDirection * speed * Time.deltaTime;
         transform.position += movement;
-
-        float currentHeight = transform.position.y;
-        float newHeight = Mathf.MoveTowards(currentHeight, targetHeight, heightChangeSpeed * Time.deltaTime);
-        transform.position = new Vector3(transform.position.x, newHeight, transform.position.z);
 
         FacePlayer();
     }
@@ -155,31 +153,26 @@ public class BossAirCraftMove : MonoBehaviour
         currentHP -= damage;
 
         float percentage = Mathf.Clamp01((float)currentHP / maxHP);
-        targetHeight = Mathf.Lerp(0, initialYPosition, percentage);
 
         if (percentage <= 0.75f)
         {
             SetWingActive(0, false);
-            GameObject explosion = Instantiate(explosionPrefab, wings[0].transform.position, Quaternion.identity);
-            Destroy(explosion.gameObject, 2f);
+            InstantiateExplosion(wings[0].transform.position);
         }
         if (percentage <= 0.5f)
         {
             SetWingActive(1, false);
-            GameObject explosion = Instantiate(explosionPrefab, wings[1].transform.position, Quaternion.identity);
-            Destroy(explosion.gameObject, 2f);
+            InstantiateExplosion(wings[1].transform.position);
         }
         if (percentage <= 0.25f)
         {
             SetWingActive(2, false);
-            GameObject explosion = Instantiate(explosionPrefab, wings[2].transform.position, Quaternion.identity);
-            Destroy(explosion.gameObject, 2f);
+            InstantiateExplosion(wings[2].transform.position);
         }
         if (percentage <= 0f)
         {
             SetWingActive(3, false);
-            GameObject explosion = Instantiate(explosionPrefab, wings[3].transform.position, Quaternion.identity);
-            Destroy(explosion.gameObject, 2f);
+            InstantiateExplosion(wings[3].transform.position);
         }
 
         if (currentHP <= 0)
@@ -187,6 +180,20 @@ public class BossAirCraftMove : MonoBehaviour
             Die();
             rb.useGravity = true;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            TakeDamage(250);
+        }
+    }
+
+    private void InstantiateExplosion(Vector3 position)
+    {
+        GameObject explosion = Instantiate(explosionPrefab, position, Quaternion.identity);
+        Destroy(explosion, 2f);
     }
 
     private void SetWingActive(int index, bool isActive)
@@ -199,39 +206,39 @@ public class BossAirCraftMove : MonoBehaviour
 
     private void Die()
     {
+        if (enemiesSpawned) return; // 既に敵が生成されている場合、処理を終了
+
+        GenerateEnemies(); // 一度だけ敵を生成
         isDead = true;
-        targetHeight = 0;
+        enemiesSpawned = true; // 敵を生成したことを記録
 
-        StartCoroutine(WaitAndSpawnEnemies(5f));
-
-        SmoothUpdateHeight();
-        isDead = true;
-        targetHeight = 0;
+        Destroy(this.gameObject, 2f);
     }
 
-    private IEnumerator WaitAndSpawnEnemies(float waitTime)
+    void GenerateEnemies()
     {
-        yield return new WaitForSeconds(waitTime);
-        SpawnEnemies();
-    }
-
-    private int spawnCount = 0;
-
-    private void SpawnEnemies() {
-        if (spawnCount >= 2) return;
-        spawnCount++;
-        Vector3 spawnPosition1 = transform.position + new Vector3(3f, 0f, 0f);
-        Vector3 spawnPosition2 = transform.position + new Vector3(-3f, 0f, 0f);
-
-        Instantiate(enemyPrefab, spawnPosition1, Quaternion.identity);
-        Instantiate(enemyPrefab1, spawnPosition2, Quaternion.identity);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Bullet"))
+        for (int i = 0; i < totalEnemies; i++)
         {
-            TakeDamage(250);
+            GameObject selectedEnemy = Random.Range(0, 2) == 0 ? enemyType1 : enemyType2;
+
+            Vector3 spawnPosition = new Vector3(
+                Random.Range(spawnAreaMin.x, spawnAreaMax.x),
+                Random.Range(spawnAreaMin.y, spawnAreaMax.y),
+                Random.Range(spawnAreaMin.z, spawnAreaMax.z)
+            );
+
+            GameObject enemy = Instantiate(selectedEnemy, spawnPosition, Quaternion.identity);
+
+            if (parentObject != null)
+            {
+                enemy.transform.SetParent(parentObject);
+            }
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube((spawnAreaMin + spawnAreaMax) / 2, spawnAreaMax - spawnAreaMin);
     }
 }
